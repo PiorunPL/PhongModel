@@ -9,4 +9,5 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="guiProject">
         <views:MainView />
+        
 </Window>
