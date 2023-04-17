@@ -17,10 +17,10 @@ public class World
         Point p4 = new Point(-5, 2, 2);
         
         // Backs square
-        Point p5 = new Point(-5, 5, 5);
-        Point p6 = new Point(-2, 5, 5);
-        Point p7 = new Point(-2, 2, 5);
-        Point p8 = new Point(-5, 2, 5);
+        Point p5 = new Point(-5, 5, 4);
+        Point p6 = new Point(-2, 5, 4);
+        Point p7 = new Point(-2, 2, 4);
+        Point p8 = new Point(-5, 2, 4);
         
         // Lines of cube
         //Front lines

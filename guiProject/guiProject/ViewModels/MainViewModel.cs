@@ -1,4 +1,8 @@
 ﻿
+using System;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Media.Imaging;
 using MainProject;
@@ -12,56 +16,79 @@ using PixelFormat = Avalonia.Platform.PixelFormat;
 
 namespace guiProject.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public class MainViewModel : ReactiveObject
 {
-    
-    public string Greeting => "Welcome to Avalonia!";
-    // public Bitmap? Image => new Bitmap(800,600);
-    // public Avalonia.Media.Imaging.Bitmap? Image => new Avalonia.Media.Imaging.WriteableBitmap(new Avalonia.PixelSize(800,600), new Vector());
     private WriteableBitmap? _image;
+    private AutoResetEvent _autoEvent;
+    private Timer _timer;
+    public string Greeting => "Welcome to Avalonia!";
     public WriteableBitmap? Image
     {
         get => _image;
         set => this.RaiseAndSetIfChanged(ref _image, value);
     }
 
+    private SKBitmap _cameraViewImage;
+   
+
+    private SKBitmap CameraViewImage
+    {
+        get => _cameraViewImage;
+        set => this.RaiseAndSetIfChanged(ref _cameraViewImage, value);
+    }
     private SKSurface CurrentSurface;
     public Controller Controller = new Controller();
     
 
 
-    public MainViewModel() : base()
+    public MainViewModel()
     {
-        Controller.Camera.PassActualWorld(Controller.World.Lines);
-        SKBitmap sourceBitmap = Controller.Camera.CreatePhoto();
+        // SetTimer();
 
-        Image =
-            new WriteableBitmap(new PixelSize((int)sourceBitmap.Width, (int)sourceBitmap.Height), new Vector(96, 96));
+        this.WhenAnyValue(x => x.CameraViewImage)
+            .Subscribe(x =>
+            {
+                DrawImage();
+                Console.WriteLine("New View!");
+            });
 
-        if(sourceBitmap is null)
+        Observable.Interval(TimeSpan.FromMilliseconds(10))
+                .Select(_ =>
+                {
+                    var photo =  Controller.CreatePhoto();
+                    Controller.ZoomIn(0.02);
+                    return photo;
+                })
+                .Subscribe(newPhoto => CameraViewImage = newPhoto);
+        
+    }
+
+    private void DrawImage()
+    {
+        Image = new WriteableBitmap(new PixelSize(800, 600), new Vector(96, 96));
+
+        if (Image == null || CameraViewImage == null)
             return;
-        
-        
+
         using (var lockedBitmap = Image.Lock())
         {
-            SKImageInfo info = new SKImageInfo(lockedBitmap.Size.Width, lockedBitmap.Size.Height, sourceBitmap.ColorType);
+            SKImageInfo info = new SKImageInfo(lockedBitmap.Size.Width, lockedBitmap.Size.Height, CameraViewImage.ColorType);
 
             CurrentSurface = SKSurface.Create(info, lockedBitmap.Address, lockedBitmap.RowBytes);
             CurrentSurface.Canvas.Clear(new SKColor(255, 255, 255));
-            CurrentSurface.Canvas.DrawBitmap(sourceBitmap,0,0);
+            CurrentSurface.Canvas.DrawBitmap(CameraViewImage,0,0);
         }
-
-        // Image = sourceBitmap;
-        // Image = Controller.Camera.CreatePhoto()
-        // using (MemoryStream memoryStream = new MemoryStream())
-        // {
-        //     var bitmap = Controller.Camera.CreatePhoto();
-        //     bitmap.Save(memoryStream, ImageFormat.Png);
-        //     memoryStream.Position = 0;
-        //
-        //     Image = new Avalonia.Media.Imaging.Bitmap(memoryStream);
-        // }
-        // Image = 
-
     }
+
+    private void SetTimer()
+    {
+        _autoEvent = new AutoResetEvent(false);
+        _timer = new Timer(OnTick, _autoEvent, 0, 10 );
+    }
+
+    private void OnTick(Object? info)
+    {
+        Controller.ZoomIn(0.01);
+    }
+    
 }
