@@ -29,15 +29,6 @@ public class Point
         while (viewPortX > Int16.MaxValue || viewPortY > Int16.MaxValue || viewPortX < Int16.MinValue ||
             viewPortY < Int16.MinValue)
         {
-            // double biggerValue;
-            // if (Math.Abs(viewPortX) > Math.Abs(viewPortY))
-            //     biggerValue = viewPortX;
-            // else
-            //     biggerValue = viewPortY;
-            //
-            // double divider = biggerValue / ((double)Int16.MaxValue / 16);
-            // viewPortX = viewPortX / divider;
-            // viewPortY = viewPortY / divider;
             viewPortX = viewPortX / 10;
             viewPortY = viewPortY / 10;
         }
