@@ -12,13 +12,17 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Accord" Version="3.8.2-alpha" />
+        <PackageReference Include="Accord.Math" Version="3.8.2-alpha" />
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+        <PackageReference Include="SharpHook" Version="4.2.0" />
         <PackageReference Include="SkiaSharp" Version="2.88.3" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.3" />
+        <PackageReference Include="System.ObjectModel" Version="4.3.0" />
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
     </ItemGroup>
 

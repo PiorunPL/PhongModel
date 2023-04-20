@@ -11,20 +11,12 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:MainViewModel />
   </Design.DataContext>
-    
+   
     <RelativePanel  HorizontalAlignment="Center" VerticalAlignment="Center">
-      <Panel Name="Display" Width="800" Height="600" Background="Black">
+      <Panel Name="Display" Width="1900" Height="1000" Background="Black">
           <Image Name="ImageDisplay" Stretch="Uniform" Source="{Binding Image }"/>
-          <!-- <Panel Height="200" IsVisible="{Binding Image, Converter={x:Static ObjectConverters.IsNull}}"> -->
-          <!--     <Panel Background="Blue"></Panel> -->
-          <!-- </Panel> -->
-
-              <!-- <Rectangle Fill="Red" Height="44" Width="44"/> -->
-          <!-- <Rectangle Fill="Blue" Height="44" Width="44" Canvas.Left="20" Canvas.Top="20"/> -->
-          <!-- <Rectangle Fill="Green" Height="44" Width="44" Canvas.Left="40" Canvas.Top="40"/> -->
-          <!-- <Rectangle Fill="Orange" Height="44" Width="44" Canvas.Left="60" Canvas.Top="60"/> -->
       </Panel>
-      <TextBlock Name="Text" Text="{Binding Greeting}" Margin="30" RelativePanel.Below="Display" RelativePanel.AlignHorizontalCenterWith="Display"/>
+      <!-- <TextBlock Name="Text" Text="{Binding Greeting}" Margin="30" RelativePanel.Below="Display" RelativePanel.AlignHorizontalCenterWith="Display"/> -->
   </RelativePanel>
     
   

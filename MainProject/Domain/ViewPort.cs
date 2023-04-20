@@ -7,5 +7,5 @@ public class ViewPort
     public double YTop = 6;
     public double YBottom = -6;
 
-    public double Z = 1;
+    public double Z = 15;
 }

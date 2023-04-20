@@ -7,14 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <WasmExtraFilesToDeploy Include="AppBundle\**"/>
+        <WasmExtraFilesToDeploy Include="AppBundle\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia.Browser" Version="$(AvaloniaVersion)"/>
+        <PackageReference Include="Accord" Version="3.8.2-alpha" />
+        <PackageReference Include="Accord.Math" Version="3.8.2-alpha" />
+        <PackageReference Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\guiProject\guiProject.csproj"/>
+        <ProjectReference Include="..\guiProject\guiProject.csproj" />
     </ItemGroup>
 </Project>

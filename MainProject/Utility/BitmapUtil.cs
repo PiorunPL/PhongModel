@@ -6,8 +6,8 @@ namespace MainProject;
 
 public class BitmapUtil
 {
-    public int targetWidth = 800;
-    public int targetHeight = 600;
+    public int targetWidth = 1900;
+    public int targetHeight = 1000;
 
     public ViewPort ViewPort;
 
@@ -31,16 +31,12 @@ public class BitmapUtil
             Point point1 = line.Point1;
             Point point2 = line.Point2;
 
-            if (point1.CurrentPosition.Z < 0 && point2.CurrentPosition.Z < 0) 
+            if (point1.CurrentPosition.Z <= 0 && point2.CurrentPosition.Z <= 0) 
                 continue;
-
-            Point2D point2D_1 = point1.GetViewPortCoordinates(ViewPort.Z);
-            Point2D point2D_2 = point2.GetViewPortCoordinates(ViewPort.Z);
-
-            //TODO: Edit method getPointCoordinatesBitmap to use also ViewPort sizes;
-            (int x1, int y1) = point2D_1.getPointCoordinatesBitmap(targetWidth, targetHeight);
-            (int x2, int y2) = point2D_2.getPointCoordinatesBitmap(targetWidth, targetHeight);
-
+            
+            (int x1, int y1) = point1.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
+            (int x2, int y2) = point2.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
+                
             canvas.DrawLine(x1, y1, x2, y2, paint);
         }
         

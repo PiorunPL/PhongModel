@@ -4,23 +4,37 @@ public class World
 {
     public List<Point> Points = new List<Point>();
     public List<Line> Lines = new List<Line>();
-    
-    
 
     public World()
     {
+        //Front Row
+        CreateCuboid(-5,2,6,-2,5,9);
+        CreateCuboid(-5,-2,6,-2,-5,9);
+        CreateCuboid(5,2,6,2,5,9);
+        CreateCuboid(5,-2,6,2,-5,9);
+        
+        //Back Row
+        CreateCuboid(-5,2,13,-2,5,16);
+        CreateCuboid(-5,-2,13,-2,-5,16);
+        CreateCuboid(5,2,13,2,5,16);
+        CreateCuboid(5,-2,13,2,-5,16);
+        
+    }
+
+    private void CreateCuboid(double x0, double y0, double z0, double x1, double y1, double z1)
+    {
         //Points of cube
         // Front square
-        Point p1 = new Point(-5, 5, 2);
-        Point p2 = new Point(-2, 5, 2);
-        Point p3 = new Point(-2, 2, 2);
-        Point p4 = new Point(-5, 2, 2);
-        
+        Point p1 = new Point(x0, y1, z0);
+        Point p2 = new Point(x1, y1, z0);
+        Point p3 = new Point(x1, y0, z0);
+        Point p4 = new Point(x0, y0, z0);
+
         // Backs square
-        Point p5 = new Point(-5, 5, 4);
-        Point p6 = new Point(-2, 5, 4);
-        Point p7 = new Point(-2, 2, 4);
-        Point p8 = new Point(-5, 2, 4);
+        Point p5 = new Point(x0, y1, z1);
+        Point p6 = new Point(x1, y1, z1);
+        Point p7 = new Point(x1, y0, z1);
+        Point p8 = new Point(x0, y0, z1);
         
         // Lines of cube
         //Front lines
@@ -97,7 +111,6 @@ public class World
         Lines.Add(l26);
         Lines.Add(l37);
         Lines.Add(l48);
-        
     }
     
 }

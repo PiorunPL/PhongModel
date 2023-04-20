@@ -6,8 +6,29 @@
         xmlns:views="clr-namespace:guiProject.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="guiProject.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="guiProject">
         <views:MainView />
         
+        <!-- <Design.DataContext> -->
+        <!--         <vm:MainViewModel/> -->
+        <!-- </Design.DataContext> -->
+        <Window.KeyBindings>
+                <!-- <KeyBinding  Command="{Binding GoForward}" Gesture="W"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding GoBackward}" Gesture="S"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding GoLeft}" Gesture="A"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding GoRight}" Gesture="D"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding GoUp}" Gesture="U"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding GoDown}" Gesture="I"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding TurnLeft}" Gesture="Q"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding TurnRight}" Gesture="E"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding TurnUp}" Gesture="K"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding TurnDown}" Gesture="J"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding TurnClockwise}" Gesture="L"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding TurnCounterClockwise}" Gesture="H"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding ZoomIn}" Gesture="+"></KeyBinding> -->
+                <!-- <KeyBinding  Command="{Binding ZoomOut}" Gesture="-"></KeyBinding> -->
+        </Window.KeyBindings>
+
 </Window>

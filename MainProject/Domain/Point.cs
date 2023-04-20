@@ -1,3 +1,6 @@
+using Accord;
+using Accord.Math;
+
 namespace MainProject;
 
 public class Point
@@ -15,10 +18,59 @@ public class Point
 
     public Point2D GetViewPortCoordinates(double d)
     {
-        double viewPortX = (CurrentPosition.X * d) / CurrentPosition.Z;
-        double viewPortY = (CurrentPosition.Y * d) / CurrentPosition.Z;
+        var tempZ = CurrentPosition.Z;
+        if (tempZ == 0)
+            tempZ = 0.0001;
+        if (tempZ < 0)
+            d = -d * 100 ; // ???
+        double viewPortX = (CurrentPosition.X * d) / tempZ;
+        double viewPortY = (CurrentPosition.Y * d) / tempZ;
 
+        while (viewPortX > Int16.MaxValue || viewPortY > Int16.MaxValue || viewPortX < Int16.MinValue ||
+            viewPortY < Int16.MinValue)
+        {
+            // double biggerValue;
+            // if (Math.Abs(viewPortX) > Math.Abs(viewPortY))
+            //     biggerValue = viewPortX;
+            // else
+            //     biggerValue = viewPortY;
+            //
+            // double divider = biggerValue / ((double)Int16.MaxValue / 16);
+            // viewPortX = viewPortX / divider;
+            // viewPortY = viewPortY / divider;
+            viewPortX = viewPortX / 10;
+            viewPortY = viewPortY / 10;
+        }
+        
         return new Point2D(){X = viewPortX, Y = viewPortY};
+    }
+    
+    public (int x, int y) getPointCoordinatesBitmap(int width, int height, double d)
+    {
+        var pointTemp =GetViewPortCoordinates(d);
+        var tempX = pointTemp.X;
+        var tempY = pointTemp.Y;
+        
+        var widthHelp = width / 2;
+        var heightHelp = height / 2;
+
+        var x_draw = (int)(tempX * 50 + widthHelp);
+        var y_draw = (int)(tempY * (-50) + heightHelp);
+
+        return (x_draw, y_draw);
+    }
+
+    public Vector4 GetVector()
+    {
+        Vector4 vector = new Vector4((float)CurrentPosition.X, (float)CurrentPosition.Y, (float)CurrentPosition.Z,1);
+        return vector;
+    }
+
+    public void LoadCoordinatesFromVector(Vector4 vector)
+    {
+        CurrentPosition.X = vector.X;
+        CurrentPosition.Y = vector.Y;
+        CurrentPosition.Z = vector.Z;
     }
     
 }
