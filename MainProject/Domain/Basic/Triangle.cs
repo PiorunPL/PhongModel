@@ -6,13 +6,14 @@ public class Triangle
     public Point P2;
     public Point P3;
     public Vector Normal; //Currently not using, problem with Normal changing, while moving/rotating (camera coordinate system)
+    public int[] color;
     
-    
-    public Triangle(Point p1, Point p2, Point p3)
+    public Triangle(Point p1, Point p2, Point p3, int[] color)
     {
         P1 = p1;
         P2 = p2;
         P3 = p3;
+        this.color = color;
         Normal = GetNormalVector();
     }
 

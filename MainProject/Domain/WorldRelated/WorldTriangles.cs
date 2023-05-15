@@ -6,6 +6,12 @@ public class WorldTriangles
 {
     public List<Triangle> Triangles = new List<Triangle>();
     public List<Point> Points = new List<Point>();
+    int[] color1 = new int[]{255, 40, 0};
+    int[] color2 = new int[]{255, 80, 0};
+    int[] color3 = new int[]{255, 120, 0};
+    int[] color4 = new int[]{255, 160, 0};
+    int[] color5 = new int[]{255, 200, 0};
+    int[] color6 = new int[]{255, 240, 0};
 
     public void SetUpBasicWorld()
     {
@@ -68,28 +74,28 @@ public class WorldTriangles
         Points.Add(p8);
 
         //Front
-        Triangle t1 = new Triangle(p1, p2, p3);
-        Triangle t2 = new Triangle(p3, p4, p1);
+        Triangle t1 = new Triangle(p1, p2, p3, color1);
+        Triangle t2 = new Triangle(p3, p4, p1, color1);
         
         //Back
-        Triangle t3 = new Triangle(p5, p6, p7);
-        Triangle t4 = new Triangle(p7, p8, p5);
+        Triangle t3 = new Triangle(p5, p6, p7, color2);
+        Triangle t4 = new Triangle(p7, p8, p5, color2);
         
         //Top
-        Triangle t5 = new Triangle(p1, p2, p5);
-        Triangle t6 = new Triangle(p2, p5, p6);
+        Triangle t5 = new Triangle(p1, p2, p5, color3);
+        Triangle t6 = new Triangle(p2, p5, p6, color3);
         
         //Bottom
-        Triangle t7 = new Triangle(p3, p4, p8);
-        Triangle t8 = new Triangle(p3, p8, p7);
+        Triangle t7 = new Triangle(p3, p4, p8, color4);
+        Triangle t8 = new Triangle(p3, p8, p7, color4);
         
         //Right
-        Triangle t9 = new Triangle(p2, p3, p7);
-        Triangle t10 = new Triangle(p2, p6, p7);
+        Triangle t9 = new Triangle(p2, p3, p7, color5);
+        Triangle t10 = new Triangle(p2, p6, p7, color5);
         
         //Left
-        Triangle t11 = new Triangle(p1, p4, p5);
-        Triangle t12 = new Triangle(p4, p5, p8);
+        Triangle t11 = new Triangle(p1, p4, p5, color6);
+        Triangle t12 = new Triangle(p4, p5, p8, color6);
 
         Triangles.Add(t1);
         Triangles.Add(t2);
