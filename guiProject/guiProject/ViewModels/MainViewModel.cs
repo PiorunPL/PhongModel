@@ -5,9 +5,11 @@ using Avalonia;
 using Avalonia.Media.Imaging;
 using guiProject.Other;
 using MainProject;
+using MainProject.Controller;
 using ReactiveUI;
 using SharpHook;
 using SkiaSharp;
+using Vector = Avalonia.Vector;
 
 namespace guiProject.ViewModels;
 

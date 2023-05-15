@@ -1,4 +1,4 @@
-namespace MainProject;
+namespace MainProject.Domain.CameraRelated;
 
 public class ViewPort
 {

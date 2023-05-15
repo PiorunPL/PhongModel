@@ -1,4 +1,4 @@
-namespace MainProject;
+namespace MainProject.Domain.Basic;
 
 public class Line
 {

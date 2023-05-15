@@ -1,6 +1,6 @@
 namespace MainProject.Utility;
 
-public class DrawingLine
+public class DrawingTriangle
 {
     
 }

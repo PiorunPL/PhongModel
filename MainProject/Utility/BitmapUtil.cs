@@ -1,8 +1,9 @@
-using System.Drawing;
-using System.Drawing.Imaging;
+using MainProject.Domain.Basic;
+using MainProject.Domain.CameraRelated;
 using SkiaSharp;
+using Point = MainProject.Domain.Basic.Point;
 
-namespace MainProject;
+namespace MainProject.Utility;
 
 public class BitmapUtil
 {
@@ -16,7 +17,7 @@ public class BitmapUtil
         ViewPort = viewPort;
     }
     
-    public SKBitmap getBitmapFromLines(List<Line> lines)
+    public SKBitmap GetBitmapFromLines(List<Line> lines)
     {
         SKBitmap bitmap = new SKBitmap(targetWidth, targetHeight, true);
         SKCanvas canvas = new SKCanvas(bitmap);
@@ -42,6 +43,50 @@ public class BitmapUtil
         
         //TODO: Change every point state not calculated!
 
+        return bitmap;
+    }
+
+    public SKBitmap GetBitmapFromTriangles(List<Triangle> triangles)
+    {
+        SKBitmap bitmap = new SKBitmap(targetWidth, targetHeight, true);
+        SKCanvas canvas = new SKCanvas(bitmap);
+
+        foreach (var triangle in triangles)
+        {
+            var normal = triangle.GetNormalVector();
+
+            byte light = 5;
+            byte baselight = 0;
+            int red = (int)(Math.Abs(normal.X % 205.0) + Math.Abs(triangle.P1.CurrentPosition.X));
+            int green = (int)(Math.Abs(normal.Y % 205.0) + Math.Abs(triangle.P1.CurrentPosition.Y));
+            int blue = (int)(Math.Abs(normal.Z % 205.0) + Math.Abs(triangle.P1.CurrentPosition.Z));
+            
+            var pathStroke = new SKPaint
+            {
+                IsAntialias = true,
+                Style = SKPaintStyle.StrokeAndFill,
+                Color = new SKColor(
+                    (byte)(red * light + baselight),
+                    (byte)(green * light+ baselight),
+                    (byte) (blue * light+ baselight)),
+                StrokeWidth = 1
+            };
+
+            (int x1, int y1) = triangle.P1.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
+            (int x2, int y2) = triangle.P2.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
+            (int x3, int y3) = triangle.P3.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
+
+
+            var path = new SKPath { FillType = SKPathFillType.EvenOdd };
+            path.MoveTo(x1,y1);
+            path.LineTo(x2,y2);
+            path.LineTo(x3,y3);
+            path.LineTo(x1,y1);
+            path.Close();
+            
+            canvas.DrawPath(path, pathStroke);
+        }
+        
         return bitmap;
     }
 }

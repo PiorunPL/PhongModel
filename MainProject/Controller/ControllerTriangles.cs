@@ -1,22 +1,17 @@
+using Accord.Math;
 using MainProject.Domain.Basic;
 using MainProject.Domain.CameraRelated;
 using MainProject.Domain.WorldRelated;
 using SkiaSharp;
-using Matrix4x4 = Accord.Math.Matrix4x4;
 
 namespace MainProject.Controller;
 
-public class Controller
+public class ControllerTriangles
 {
-    private readonly WorldTriangles _world = new();
+    private readonly WorldTriangles _world = new WorldTriangles();
     private readonly Camera _camera = new Camera();
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
 
-    public Controller()
-    {
-        _world.SetUpBasicWorld();
-    }
-    
     public SKBitmap CreatePhoto()
     {
         if (_matrices.Count != 0)
@@ -40,11 +35,12 @@ public class Controller
             _matrices.Clear();
         }
         
-        //TODO: Order Triangles
+        // _camera.Lines.AddRange(_world.Lines);
+        var result = _camera.CreatePhoto();
+        _camera.Lines.Clear();
         
-        _camera.PassActualWorld(_world.Triangles);
-        var result = _camera.CreatePhotoTriangles();
-
+        
+        
         return result;
     }
 
@@ -177,6 +173,4 @@ public class Controller
         };
         return matrix;
     }
-    
-
 }

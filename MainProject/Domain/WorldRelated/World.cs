@@ -1,4 +1,6 @@
-namespace MainProject;
+using MainProject.Domain.Basic;
+
+namespace MainProject.Domain.WorldRelated;
 
 public class World
 {

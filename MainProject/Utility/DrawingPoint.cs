@@ -1,4 +1,4 @@
-namespace MainProject;
+namespace MainProject.Utility;
 
 public class DrawingPoint
 {

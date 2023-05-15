@@ -1,7 +1,6 @@
-using Accord;
 using Accord.Math;
 
-namespace MainProject;
+namespace MainProject.Domain.Basic;
 
 public class Point
 {
@@ -14,6 +13,12 @@ public class Point
     {
         CurrentPosition = new Point3D(x,y,z);
         OriginalPosition = new Point3D(x,y,z);
+    }
+
+    public Point(Point3D p)
+    {
+        CurrentPosition = new Point3D(p);
+        OriginalPosition = new Point3D(p);
     }
 
     public Point2D GetViewPortCoordinates(double d)
