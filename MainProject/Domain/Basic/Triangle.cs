@@ -24,12 +24,21 @@ public class Triangle
         return Vector.GetCrossProduct(v1,v2);
     }
 
+    public Vector GetNormalisedNormalVector()
+    {
+        Vector normal = GetNormalVector();
+        double vectorLength = Math.Sqrt(Math.Pow(normal.X, 2) + Math.Pow(normal.Y, 2) + Math.Pow(normal.Z, 2));
+        if(vectorLength == 0) {
+            return normal;
+        }
+        return new Vector(normal.X/vectorLength, normal.Y/vectorLength, normal.Z/vectorLength);
+    }
     
     // result > 0 - behind
     // result = 0 - on plain 
     // result < 0 - in front
     public double CheckPointPosition(Point3D toCheck)
     {
-        return Vector.GetDotProduct(GetNormalVector(), Vector.GetVector(P1.CurrentPosition, toCheck));
+        return Vector.GetDotProduct(GetNormalisedNormalVector(), Vector.GetVector(P1.CurrentPosition, toCheck));
     }
 }

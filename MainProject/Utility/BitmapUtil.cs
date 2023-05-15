@@ -54,6 +54,8 @@ public class BitmapUtil
         foreach (var triangle in triangles)
         {
             var normal = triangle.GetNormalVector();
+            var normalisedNormal = triangle.GetNormalisedNormalVector();
+            Console.WriteLine(normalisedNormal);
 
             byte light = 5;
             byte baselight = 0;
