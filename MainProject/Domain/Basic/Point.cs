@@ -21,6 +21,12 @@ public class Point
         OriginalPosition = new Point3D(p);
     }
 
+    public Point(Point3D originalPosition, Point3D currentPosition)
+    {
+        CurrentPosition = currentPosition;
+        OriginalPosition = originalPosition;
+    }
+
     public Point2D GetViewPortCoordinates(double d)
     {
         var tempZ = CurrentPosition.Z;

@@ -1,6 +1,8 @@
 using MainProject.Domain.Basic;
+using MainProject.Domain.BSPTree;
 using MainProject.Domain.CameraRelated;
 using MainProject.Domain.WorldRelated;
+using MainProject.Utility;
 using SkiaSharp;
 using Matrix4x4 = Accord.Math.Matrix4x4;
 
@@ -11,10 +13,27 @@ public class Controller
     private readonly WorldTriangles _world = new();
     private readonly Camera _camera = new Camera();
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
+    private readonly BSPTreeBuilder _bspTreeBuilder = new BSPTreeBuilder();
+    private Node _BSPTreeRoot;
 
     public Controller()
     {
         _world.SetUpBasicWorld();
+        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 8);
+
+        if (tempNode == null)
+            throw new ApplicationException();
+        _BSPTreeRoot = tempNode;
+        
+        //Update world, after dividing triangles
+        //Important! First Add new Triangles, then remove old ones
+        _world.Triangles.AddRange(_bspTreeBuilder.newTrianglesToWorld);
+        _world.Points.AddRange(_bspTreeBuilder.newPointToWorld);
+        foreach (var triangle in _bspTreeBuilder.trianglesToRemoveFromWorld)
+        {
+            _world.Triangles.Remove(triangle);
+        }
+        
     }
     
     public SKBitmap CreatePhoto()
