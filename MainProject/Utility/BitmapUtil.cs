@@ -55,7 +55,7 @@ public class BitmapUtil
         {
             var normal = triangle.GetNormalVector();
             var normalisedNormal = triangle.GetNormalisedNormalVector();
-            Console.WriteLine(normalisedNormal);
+            // Console.WriteLine(normalisedNormal);
 
             byte light = 5;
             byte baselight = 0;

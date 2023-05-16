@@ -29,4 +29,36 @@ public class Node
         else
             return backDepth;
     }
+
+    public Boolean IsLeaf() 
+    {
+        return Front == null && Back == null;
+    }
+
+    public Boolean IsEmpty()
+    {
+        return Triangles == null || Triangles.Count == 0;
+    }
+
+    public override string ToString()
+    {
+        string trianglesInString = "  ";
+        foreach(Triangle t in Triangles)
+        {
+            trianglesInString += t.ToString() + "\n  ";
+        }
+        return String.Format("Node\nTriangles count: {1}\n  {0}", trianglesInString, Triangles.Count);
+    }
+
+    // public static void TraverseAndWriteOutput(Node node)
+    // {
+    //     // Console.WriteLine(indent + node.ToString());
+    //     if(!node.IsLeaf()){
+    //         foreach (var child in new Node[]{node.Front, node.Back})
+    //         {
+    //             TraverseAndWriteOutput(child, indent + "  ");
+    //         }
+    //     }
+
+    // }
 }
