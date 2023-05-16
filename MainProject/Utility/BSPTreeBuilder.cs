@@ -37,8 +37,9 @@ public class BSPTreeBuilder
         if (triangles.Count == 0)
             return null;
         
-        Node node = new Node();
         Triangle randTriangle = PopRandomTriangle(triangles);
+        Node node = new Node(randTriangle);
+        
 
         List<Triangle> frontTriangles = new List<Triangle>();
         List<Triangle> backTriangles = new List<Triangle>();
@@ -222,7 +223,7 @@ public class BSPTreeBuilder
     {
         Random rnd = new();
         Triangle randTriangle = triangles[rnd.Next(triangles.Count)];
-        triangles.Remove(randTriangle);
+        // triangles.Remove(randTriangle);
         return randTriangle;
     }
 

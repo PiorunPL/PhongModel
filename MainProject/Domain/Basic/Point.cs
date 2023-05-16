@@ -74,5 +74,10 @@ public class Point
         CurrentPosition.Y = vector.Y;
         CurrentPosition.Z = vector.Z;
     }
+
+    public override string ToString()
+    {
+        return String.Format("Point [{0}]", CurrentPosition.ToString());
+    }
     
 }

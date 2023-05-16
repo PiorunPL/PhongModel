@@ -54,12 +54,14 @@ public class BitmapUtil
         foreach (var triangle in triangles)
         {
             var normal = triangle.GetNormalVector();
+            var normalisedNormal = triangle.GetNormalisedNormalVector();
+            // Console.WriteLine(normalisedNormal);
 
             byte light = 5;
             byte baselight = 0;
-            int red = (int)(Math.Abs(normal.X % 205.0) + Math.Abs(triangle.P1.CurrentPosition.X));
-            int green = (int)(Math.Abs(normal.Y % 205.0) + Math.Abs(triangle.P1.CurrentPosition.Y));
-            int blue = (int)(Math.Abs(normal.Z % 205.0) + Math.Abs(triangle.P1.CurrentPosition.Z));
+            int red = triangle.color[0];
+            int green = triangle.color[1];
+            int blue = triangle.color[2];
             
             var pathStroke = new SKPaint
             {
@@ -68,7 +70,7 @@ public class BitmapUtil
                 Color = new SKColor(
                     (byte)(red * light + baselight),
                     (byte)(green * light+ baselight),
-                    (byte) (blue * light+ baselight)),
+                    (byte)(blue * light+ baselight)),
                 StrokeWidth = 1
             };
 

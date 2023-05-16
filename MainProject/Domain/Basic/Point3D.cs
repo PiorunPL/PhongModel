@@ -16,4 +16,9 @@ public class Point3D
         Y = p.Y;
         Z = p.Z;
     }
+
+    public override string ToString()
+    {
+        return String.Format("Point3D [X: {0}; Y: {1}; Z: {2}]", X, Y, Z);
+    }
 }

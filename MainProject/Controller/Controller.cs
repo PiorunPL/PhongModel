@@ -19,20 +19,29 @@ public class Controller
     public Controller()
     {
         _world.SetUpBasicWorld();
-        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 8);
-
+        Console.WriteLine("before get best bsp: " + _world.Triangles.Count);
+        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 80);
+        // Console.WriteLine(tempNode.GetMaxDepth());s
+        // Console.WriteLine("bsp tree: " + tempNode);
+        // Console.WriteLine("bsp tree Back node: " + tempNode.Back);
+        // Console.WriteLine("bsp tree Front node: " + tempNode.Front);
+        
+        // Node.TraverseAndWriteOutput(tempNode);
         if (tempNode == null)
             throw new ApplicationException();
         _BSPTreeRoot = tempNode;
         
         //Update world, after dividing triangles
         //Important! First Add new Triangles, then remove old ones
+        Console.WriteLine("before add range: " + _world.Triangles.Count);
         _world.Triangles.AddRange(_bspTreeBuilder.newTrianglesToWorld);
+        Console.WriteLine("after add range: " + _world.Triangles.Count);
         _world.Points.AddRange(_bspTreeBuilder.newPointToWorld);
         foreach (var triangle in _bspTreeBuilder.trianglesToRemoveFromWorld)
         {
             _world.Triangles.Remove(triangle);
         }
+        Console.WriteLine("after remove: " + _world.Triangles.Count);
         
     }
     
@@ -60,7 +69,12 @@ public class Controller
         }
         
         //TODO: Order Triangles
-        
+        PainingAlgorithOrder PAO = new PainingAlgorithOrder();
+        PAO.CreateTrianglesOrder(_BSPTreeRoot);
+        Console.WriteLine("before size: " + _world.Triangles.Count);
+        Console.WriteLine("order size: " + PAO.Order.Count);
+        _world.Triangles = PAO.Order;
+        // _world.Triangles.Reverse();
         _camera.PassActualWorld(_world.Triangles);
         var result = _camera.CreatePhotoTriangles();
 
