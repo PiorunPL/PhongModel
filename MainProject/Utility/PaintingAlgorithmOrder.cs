@@ -6,7 +6,7 @@ namespace MainProject.Utility;
 public class PainingAlgorithOrder
 {
     public List<Triangle> Order = new List<Triangle>();
-    public void CreateTrianglesOrder(Node BSPTree)
+    public void CreateTrianglesOrder(Node? BSPTree)
     {
         if(BSPTree == null)
         {

@@ -222,7 +222,7 @@ public class BSPTreeBuilder
     {
         Random rnd = new();
         Triangle randTriangle = triangles[rnd.Next(triangles.Count)];
-        triangles.Remove(randTriangle);
+        // triangles.Remove(randTriangle);
         return randTriangle;
     }
 
