@@ -5,8 +5,14 @@ namespace MainProject.Domain.BSPTree;
 public class Node
 {
     public List<Triangle> Triangles = new List<Triangle>();
+    public Triangle Plain;
     public Node? Front;
     public Node? Back;
+
+    public Node(Triangle plain)
+    {
+        Plain = plain;
+    }
 
     public int GetMaxDepth()
     {

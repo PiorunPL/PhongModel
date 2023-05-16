@@ -13,7 +13,7 @@ public class PainingAlgorithOrder
             return;
         }
         Console.WriteLine("CreateTrianglesOrder size of bsptree " + BSPTree.Triangles.Count);
-        Triangle t = BSPTree.Triangles[0];
+        Triangle t = BSPTree.Plain;
         double position = t.CheckPointPosition(new Point3D(0, 0, 0));
         if(position < 0)
         {
