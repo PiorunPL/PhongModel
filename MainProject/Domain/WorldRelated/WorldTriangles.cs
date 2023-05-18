@@ -50,6 +50,12 @@ public class WorldTriangles
         CreateCuboid(a6,b6,"F_");
         CreateCuboid(a7,b7,"G_");
         CreateCuboid(a8,b8,"H_");
+        
+        Point3D a9 = new Point3D(4, 1, 17);
+        Point3D b9 = new Point3D(0, 3, 19);
+        
+        // CreateCuboid(a9,b9,"I_");
+        
     }
 
     public void CreateCuboid(Point3D a, Point3D b, string position)

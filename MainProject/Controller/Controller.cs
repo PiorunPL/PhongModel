@@ -20,7 +20,7 @@ public class Controller
     {
         _world.SetUpBasicWorld();
         Console.WriteLine("before get best bsp: " + _world.Triangles.Count);
-        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 80);
+        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 100);
         // Console.WriteLine(tempNode.GetMaxDepth());s
         // Console.WriteLine("bsp tree: " + tempNode);
         // Console.WriteLine("bsp tree Back node: " + tempNode.Back);
@@ -73,9 +73,12 @@ public class Controller
         PAO.CreateTrianglesOrder(_BSPTreeRoot);
         Console.WriteLine("before size: " + _world.Triangles.Count);
         Console.WriteLine("order size: " + PAO.Order.Count);
-        _world.Triangles = PAO.Order;
+        var orderedTriangles = PAO.Order;
         // _world.Triangles.Reverse();
-        _camera.PassActualWorld(_world.Triangles);
+
+        var chosenTriangles = TrianglesChooser.ChooseOnlyTrianglesAhead(orderedTriangles);
+        
+        _camera.PassActualWorld(chosenTriangles);
         var result = _camera.CreatePhotoTriangles();
 
         return result;
@@ -91,7 +94,7 @@ public class Controller
 
     public void ZoomOut(double t)
     {
-        if (_camera.ViewPort.Z - t <= 0.2)
+        if (_camera.ViewPort.Z - t <= 1)
             return;
         Console.WriteLine($"Before Zoom Out: {_camera.ViewPort.Z} with t = {t}");
         _camera.ViewPort.Z -= t;
