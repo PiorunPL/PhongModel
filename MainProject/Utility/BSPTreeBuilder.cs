@@ -79,13 +79,21 @@ public class BSPTreeBuilder
         Point front, back, plain;
         (front, back, plain) = GetPreparedPointsForEasyDivide(toCheck, mainTriangle);
 
+        Random rand = new Random();
+
         Point3D intersectionPointPosition = GetPoinfOfIntersection(front.CurrentPosition, back.CurrentPosition, mainTriangle);
         Point3D intersectionPointOriginalPosition =
             GetPoinfOfIntersection(front.OriginalPosition, back.OriginalPosition, mainTriangle);
         Point intersectionPoint = new Point(intersectionPointOriginalPosition, intersectionPointPosition);
 
         Triangle t1 = new Triangle(front, plain, intersectionPoint);
+        // t1.color[0] = rand.Next(255);
+        // t1.color[1] = rand.Next(255);
+        // t1.color[2] = rand.Next(255);
         Triangle t2 = new Triangle(back, plain, intersectionPoint);
+        // t2.color[0] = rand.Next(255);
+        // t2.color[1] = rand.Next(255);
+        // t2.color[2] = rand.Next(255);
 
         newTriangles.Add(t1);
         newTriangles.Add(t2);
@@ -99,14 +107,14 @@ public class BSPTreeBuilder
     }
     
 
-    public Point3D GetPoinfOfIntersection(Point3D front, Point3D back, Triangle triangle)
+    public static Point3D GetPoinfOfIntersection(Point3D front, Point3D back, Triangle triangle)
     {
         Vector normal = triangle.GetNormalVector();
         double n = Vector.GetDotProduct(normal, Vector.GetVector(front, triangle.P1.CurrentPosition));
         Vector frontToBack = Vector.GetVector(front, back);
         double d = Vector.GetDotProduct(normal, frontToBack);
         
-        if (d == 0)
+        if (d == 0) //Problem!
             return null;
 
         double u = n / d;
@@ -116,7 +124,7 @@ public class BSPTreeBuilder
             front.Z + u * frontToBack.Z);
         return resultPoint;
     }
-    public (Point front, Point back, Point plain) GetPreparedPointsForEasyDivide(Triangle toCheck,
+    public static (Point front, Point back, Point plain) GetPreparedPointsForEasyDivide(Triangle toCheck,
         Triangle mainTriangle)
     {
         //TODO: Validation
@@ -134,16 +142,16 @@ public class BSPTreeBuilder
             front = toCheck.P3;
         
         if (pointPosition1 > 0)
-            back = toCheck.P2;
+            back = toCheck.P1;
         else if (pointPosition2 > 0)
             back = toCheck.P2;
         else
-            back = toCheck.P2;
+            back = toCheck.P3;
         
         if (pointPosition1 == 0)
-            plain = toCheck.P3;
+            plain = toCheck.P1;
         else if (pointPosition2 == 0)
-            plain = toCheck.P3;
+            plain = toCheck.P2;
         else
             plain = toCheck.P3;
 
@@ -166,9 +174,20 @@ public class BSPTreeBuilder
             GetPoinfOfIntersection(sideA2.OriginalPosition, sideB1.OriginalPosition, mainTriangle);
         Point intersectionPoint2 = new Point(intersectionPoint2OriginalPosition, intersectionPoint2Position);
 
+
+        Random rand = new Random();
         Triangle t1 = new Triangle(sideA1, intersectionPoint1, intersectionPoint2);
+        // t1.color[0] = rand.Next(255);
+        // t1.color[1] = rand.Next(255);
+        // t1.color[2] = rand.Next(255);
         Triangle t2 = new Triangle(sideA1, sideA2, intersectionPoint2);
+        // t2.color[1] = rand.Next(255);
+        // t2.color[2] = rand.Next(255);
+        // t2.color[0] = rand.Next(255);
         Triangle t3 = new Triangle(intersectionPoint1, intersectionPoint2, sideB1);
+        // t3.color[0] = rand.Next(255);
+        // t3.color[1] = rand.Next(255);
+        // t3.color[2] = rand.Next(255);
         
         
         newTriangles.Add(t1);
@@ -185,7 +204,7 @@ public class BSPTreeBuilder
         return newTriangles;
     }
 
-    public (Point sideA1, Point sideA2, Point sideB1) GetPreparedPointsForHardDivide(Triangle toCheck,
+    public static (Point sideA1, Point sideA2, Point sideB1) GetPreparedPointsForHardDivide(Triangle toCheck,
         Triangle mainTriangle)
     {
         Point sideA1, sideA2, sideB1;
@@ -227,7 +246,7 @@ public class BSPTreeBuilder
         return randTriangle;
     }
 
-    public TrianglePosition CheckTrianglePosition(Triangle toCheck, Triangle mainTriangle)
+    public static TrianglePosition CheckTrianglePosition(Triangle toCheck, Triangle mainTriangle)
     {
         bool isFront = false;
         bool isBack = false;
@@ -290,7 +309,7 @@ public class BSPTreeBuilder
                 depthOfBestRoot = currentDepth;
             }
         }
-
+        Console.WriteLine("Depth of best root: " + depthOfBestRoot.ToString());
         return bestRoot;
     }
 

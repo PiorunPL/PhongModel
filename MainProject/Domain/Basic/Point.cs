@@ -33,7 +33,7 @@ public class Point
         if (tempZ == 0)
             tempZ = 0.0001;
         if (tempZ < 0)
-            d = -d * 100 ; // ???
+            d = -d * 1 ; // ???
         double viewPortX = (CurrentPosition.X * d) / tempZ;
         double viewPortY = (CurrentPosition.Y * d) / tempZ;
 

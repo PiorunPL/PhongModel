@@ -50,7 +50,14 @@ public class BitmapUtil
     {
         SKBitmap bitmap = new SKBitmap(targetWidth, targetHeight, true);
         SKCanvas canvas = new SKCanvas(bitmap);
-
+        
+        var pathStroke = new SKPaint
+        {
+            IsAntialias = true,
+            Style = SKPaintStyle.StrokeAndFill,
+            StrokeWidth = 1
+        };
+        
         foreach (var triangle in triangles)
         {
             var normal = triangle.GetNormalVector();
@@ -62,17 +69,11 @@ public class BitmapUtil
             int red = triangle.color[0];
             int green = triangle.color[1];
             int blue = triangle.color[2];
-            
-            var pathStroke = new SKPaint
-            {
-                IsAntialias = true,
-                Style = SKPaintStyle.StrokeAndFill,
-                Color = new SKColor(
-                    (byte)(red * light + baselight),
-                    (byte)(green * light+ baselight),
-                    (byte)(blue * light+ baselight)),
-                StrokeWidth = 1
-            };
+
+            pathStroke.Color = new SKColor(
+                (byte)(red * light + baselight),
+                (byte)(green * light + baselight),
+                (byte)(blue * light + baselight));
 
             (int x1, int y1) = triangle.P1.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
             (int x2, int y2) = triangle.P2.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
