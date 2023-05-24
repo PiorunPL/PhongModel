@@ -16,6 +16,26 @@ public class Vector
         Z = z;
     }
 
+    public void SetLength(double targetLength)
+    {
+        double length = GetLength();
+        var normalized = GetNormalized();
+        X = normalized.X * targetLength;
+        Y = normalized.Y * targetLength;
+        Z = normalized.Z * targetLength;
+    }
+
+    public Vector GetNormalized()
+    {
+        double length = GetLength();
+        return new Vector(X / length, Y / length, Z / length);
+    }
+    
+    
+    public double GetLength()
+    {
+        return Math.Sqrt(X * X + Y * Y + Z * Z);
+    }
     public static double GetDotProduct(Vector v1, Vector v2)
     {
         return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;

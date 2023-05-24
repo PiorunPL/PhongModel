@@ -113,9 +113,14 @@ public class BSPTreeBuilder
         double n = Vector.GetDotProduct(normal, Vector.GetVector(front, triangle.P1.CurrentPosition));
         Vector frontToBack = Vector.GetVector(front, back);
         double d = Vector.GetDotProduct(normal, frontToBack);
-        
+
         if (d == 0) //Problem!
+        {
             return null;
+            // d = 0.001;
+        }
+            
+            
 
         double u = n / d;
         Point3D resultPoint = new Point3D(

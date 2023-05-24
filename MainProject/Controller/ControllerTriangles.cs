@@ -8,7 +8,7 @@ namespace MainProject.Controller;
 
 public class ControllerTriangles
 {
-    private readonly WorldTriangles _world = new WorldTriangles();
+    private readonly WorldSphere _world = new WorldSphere();
     private readonly Camera _camera = new Camera();
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
 

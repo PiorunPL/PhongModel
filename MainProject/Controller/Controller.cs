@@ -10,7 +10,7 @@ namespace MainProject.Controller;
 
 public class Controller
 {
-    private readonly WorldTriangles _world = new();
+    private readonly WorldSphere _world = new();
     private readonly Camera _camera = new Camera();
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
     private readonly BSPTreeBuilder _bspTreeBuilder = new BSPTreeBuilder();
@@ -18,9 +18,9 @@ public class Controller
 
     public Controller()
     {
-        _world.SetUpBasicWorld();
-        Console.WriteLine("before get best bsp: " + _world.Triangles.Count);
-        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 100);
+        // _world.SetUpBasicWorld();
+        // Console.WriteLine("before get best bsp: " + _world.Triangles.Count);
+        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 3);
         // Console.WriteLine(tempNode.GetMaxDepth());s
         // Console.WriteLine("bsp tree: " + tempNode);
         // Console.WriteLine("bsp tree Back node: " + tempNode.Back);
@@ -33,15 +33,15 @@ public class Controller
         
         //Update world, after dividing triangles
         //Important! First Add new Triangles, then remove old ones
-        Console.WriteLine("before add range: " + _world.Triangles.Count);
+        // Console.WriteLine("before add range: " + _world.Triangles.Count);
         _world.Triangles.AddRange(_bspTreeBuilder.newTrianglesToWorld);
-        Console.WriteLine("after add range: " + _world.Triangles.Count);
+        // Console.WriteLine("after add range: " + _world.Triangles.Count);
         _world.Points.AddRange(_bspTreeBuilder.newPointToWorld);
         foreach (var triangle in _bspTreeBuilder.trianglesToRemoveFromWorld)
         {
             _world.Triangles.Remove(triangle);
         }
-        Console.WriteLine("after remove: " + _world.Triangles.Count);
+        // Console.WriteLine("after remove: " + _world.Triangles.Count);
         
     }
     
@@ -71,8 +71,8 @@ public class Controller
         //TODO: Order Triangles
         PainingAlgorithOrder PAO = new PainingAlgorithOrder();
         PAO.CreateTrianglesOrder(_BSPTreeRoot);
-        Console.WriteLine("before size: " + _world.Triangles.Count);
-        Console.WriteLine("order size: " + PAO.Order.Count);
+        // Console.WriteLine("before size: " + _world.Triangles.Count);
+        // Console.WriteLine("order size: " + PAO.Order.Count);
         var orderedTriangles = PAO.Order;
         // _world.Triangles.Reverse();
 
