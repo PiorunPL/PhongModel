@@ -27,13 +27,13 @@ public static class TrianglesChooser
                     Point sideA1, sideA2, sideB1;
                                     (sideA1, sideA2, sideB1) = BSPTreeBuilder.GetPreparedPointsForHardDivide(currentTriangle, cameraPlane);
                                     
-                                    Point3D intersectionPoint1Position = BSPTreeBuilder.GetPoinfOfIntersection(sideA1.CurrentPosition, sideB1.CurrentPosition, cameraPlane);
-                                    Point3D intersectionPoint1OriginalPosition =
+                                    Point3D? intersectionPoint1Position = BSPTreeBuilder.GetPoinfOfIntersection(sideA1.CurrentPosition, sideB1.CurrentPosition, cameraPlane);
+                                    Point3D? intersectionPoint1OriginalPosition =
                                         BSPTreeBuilder.GetPoinfOfIntersection(sideA1.OriginalPosition, sideB1.OriginalPosition, cameraPlane);
                                     Point intersectionPoint1 = new Point(intersectionPoint1OriginalPosition, intersectionPoint1Position);
                             
-                                    Point3D intersectionPoint2Position = BSPTreeBuilder.GetPoinfOfIntersection(sideA2.CurrentPosition, sideB1.CurrentPosition, cameraPlane);
-                                    Point3D intersectionPoint2OriginalPosition =
+                                    Point3D? intersectionPoint2Position = BSPTreeBuilder.GetPoinfOfIntersection(sideA2.CurrentPosition, sideB1.CurrentPosition, cameraPlane);
+                                    Point3D? intersectionPoint2OriginalPosition =
                                         BSPTreeBuilder.GetPoinfOfIntersection(sideA2.OriginalPosition, sideB1.OriginalPosition, cameraPlane);
                                     Point intersectionPoint2 = new Point(intersectionPoint2OriginalPosition, intersectionPoint2Position);
                                     
@@ -60,8 +60,8 @@ public static class TrianglesChooser
                     Point front, back, plane;
                     (front, back, plane) = BSPTreeBuilder.GetPreparedPointsForEasyDivide(currentTriangle, cameraPlane);
 
-                    Point3D intersectionPointPosition = BSPTreeBuilder.GetPoinfOfIntersection(front.CurrentPosition, back.CurrentPosition, cameraPlane);
-                    Point3D intersectionPointOriginalPosition =
+                    Point3D? intersectionPointPosition = BSPTreeBuilder.GetPoinfOfIntersection(front.CurrentPosition, back.CurrentPosition, cameraPlane);
+                    Point3D? intersectionPointOriginalPosition =
                         BSPTreeBuilder.GetPoinfOfIntersection(front.OriginalPosition, back.OriginalPosition, cameraPlane);
                     Point intersectionPoint = new Point(intersectionPointOriginalPosition, intersectionPointPosition);
 
@@ -75,13 +75,13 @@ public static class TrianglesChooser
                     Point sideA1, sideA2, sideB1;
                     (sideA1, sideA2, sideB1) = BSPTreeBuilder.GetPreparedPointsForHardDivide(currentTriangle, cameraPlane);
 
-                    Point3D intersectionPoint1Position = BSPTreeBuilder.GetPoinfOfIntersection(sideA1.CurrentPosition, sideB1.CurrentPosition, cameraPlane);
-                    Point3D intersectionPoint1OriginalPosition =
+                    Point3D? intersectionPoint1Position = BSPTreeBuilder.GetPoinfOfIntersection(sideA1.CurrentPosition, sideB1.CurrentPosition, cameraPlane);
+                    Point3D? intersectionPoint1OriginalPosition =
                         BSPTreeBuilder.GetPoinfOfIntersection(sideA1.OriginalPosition, sideB1.OriginalPosition, cameraPlane);
                     Point intersectionPoint1 = new Point(intersectionPoint1OriginalPosition, intersectionPoint1Position);
         
-                    Point3D intersectionPoint2Position = BSPTreeBuilder.GetPoinfOfIntersection(sideA2.CurrentPosition, sideB1.CurrentPosition, cameraPlane);
-                    Point3D intersectionPoint2OriginalPosition =
+                    Point3D? intersectionPoint2Position = BSPTreeBuilder.GetPoinfOfIntersection(sideA2.CurrentPosition, sideB1.CurrentPosition, cameraPlane);
+                    Point3D? intersectionPoint2OriginalPosition =
                         BSPTreeBuilder.GetPoinfOfIntersection(sideA2.OriginalPosition, sideB1.OriginalPosition, cameraPlane);
                     Point intersectionPoint2 = new Point(intersectionPoint2OriginalPosition, intersectionPoint2Position);
 

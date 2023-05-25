@@ -10,7 +10,7 @@ namespace MainProject.Controller;
 
 public class Controller
 {
-    private readonly WorldSphere _world = new();
+    private readonly WorldSphere _world = new(5);
     private readonly Camera _camera = new Camera();
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
     private readonly BSPTreeBuilder _bspTreeBuilder = new BSPTreeBuilder();
@@ -20,7 +20,7 @@ public class Controller
     {
         // _world.SetUpBasicWorld();
         // Console.WriteLine("before get best bsp: " + _world.Triangles.Count);
-        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 3);
+        Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 1);
         // Console.WriteLine(tempNode.GetMaxDepth());s
         // Console.WriteLine("bsp tree: " + tempNode);
         // Console.WriteLine("bsp tree Back node: " + tempNode.Back);
@@ -34,10 +34,10 @@ public class Controller
         //Update world, after dividing triangles
         //Important! First Add new Triangles, then remove old ones
         // Console.WriteLine("before add range: " + _world.Triangles.Count);
-        _world.Triangles.AddRange(_bspTreeBuilder.newTrianglesToWorld);
+        _world.Triangles.AddRange(_bspTreeBuilder.NewTrianglesToWorld);
         // Console.WriteLine("after add range: " + _world.Triangles.Count);
-        _world.Points.AddRange(_bspTreeBuilder.newPointToWorld);
-        foreach (var triangle in _bspTreeBuilder.trianglesToRemoveFromWorld)
+        _world.Points.AddRange(_bspTreeBuilder.NewPointToWorld);
+        foreach (var triangle in _bspTreeBuilder.TrianglesToRemoveFromWorld)
         {
             _world.Triangles.Remove(triangle);
         }

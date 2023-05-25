@@ -5,9 +5,11 @@ namespace MainProject.Utility;
 
 public class BSPTreeBuilder
 {
-    public List<Point> newPointToWorld = new List<Point>();
-    public List<Triangle> newTrianglesToWorld = new List<Triangle>();
-    public List<Triangle> trianglesToRemoveFromWorld = new List<Triangle>();
+    public readonly List<Point> NewPointToWorld = new List<Point>();
+    public readonly List<Triangle> NewTrianglesToWorld = new List<Triangle>();
+    public readonly List<Triangle> TrianglesToRemoveFromWorld = new List<Triangle>();
+    
+    private const double Epsilon = 1.0E-10;
     
     public Node? GetBestBSPTree(List<Triangle> triangles, int numberOfTries)
     {
@@ -16,9 +18,9 @@ public class BSPTreeBuilder
         if (triangles.Count == 0)
             return null;
         
-        newPointToWorld.Clear();
-        newTrianglesToWorld.Clear();
-        trianglesToRemoveFromWorld.Clear();
+        NewPointToWorld.Clear();
+        NewTrianglesToWorld.Clear();
+        TrianglesToRemoveFromWorld.Clear();
 
         List<Node> roots = new List<Node>();
 
@@ -79,11 +81,13 @@ public class BSPTreeBuilder
         Point front, back, plain;
         (front, back, plain) = GetPreparedPointsForEasyDivide(toCheck, mainTriangle);
 
-        Random rand = new Random();
-
-        Point3D intersectionPointPosition = GetPoinfOfIntersection(front.CurrentPosition, back.CurrentPosition, mainTriangle);
-        Point3D intersectionPointOriginalPosition =
+        Point3D? intersectionPointPosition = GetPoinfOfIntersection(front.CurrentPosition, back.CurrentPosition, mainTriangle);
+        Point3D? intersectionPointOriginalPosition =
             GetPoinfOfIntersection(front.OriginalPosition, back.OriginalPosition, mainTriangle);
+
+        if (intersectionPointPosition == null || intersectionPointOriginalPosition == null)
+            return newTriangles;
+        
         Point intersectionPoint = new Point(intersectionPointOriginalPosition, intersectionPointPosition);
 
         Triangle t1 = new Triangle(front, plain, intersectionPoint);
@@ -98,16 +102,16 @@ public class BSPTreeBuilder
         newTriangles.Add(t1);
         newTriangles.Add(t2);
         
-        newPointToWorld.Add(intersectionPoint);
-        newTrianglesToWorld.Add(t1);
-        newTrianglesToWorld.Add(t2);
-        trianglesToRemoveFromWorld.Add(toCheck);
+        NewPointToWorld.Add(intersectionPoint);
+        NewTrianglesToWorld.Add(t1);
+        NewTrianglesToWorld.Add(t2);
+        TrianglesToRemoveFromWorld.Add(toCheck);
         
         return newTriangles;
     }
     
 
-    public static Point3D GetPoinfOfIntersection(Point3D front, Point3D back, Triangle triangle)
+    public static Point3D? GetPoinfOfIntersection(Point3D front, Point3D back, Triangle triangle)
     {
         Vector normal = triangle.GetNormalVector();
         double n = Vector.GetDotProduct(normal, Vector.GetVector(front, triangle.P1.CurrentPosition));
@@ -119,10 +123,10 @@ public class BSPTreeBuilder
             return null;
             // d = 0.001;
         }
-            
-            
-
+        
         double u = n / d;
+        
+        
         Point3D resultPoint = new Point3D(
             front.X + u * frontToBack.X,
             front.Y + u * frontToBack.Y,
@@ -139,23 +143,23 @@ public class BSPTreeBuilder
         double pointPosition2 = mainTriangle.CheckPointPosition(toCheck.P2.CurrentPosition);
         // double pointPosition3 = mainTriangle.CheckPointPosition(toCheck.P3.CurrentPosition);
         
-        if (pointPosition1 < 0)
+        if (pointPosition1 < -Epsilon)
             front = toCheck.P1;
-        else if (pointPosition2 < 0)
+        else if (pointPosition2 < -Epsilon)
             front = toCheck.P2;
         else
             front = toCheck.P3;
         
-        if (pointPosition1 > 0)
+        if (pointPosition1 > Epsilon)
             back = toCheck.P1;
-        else if (pointPosition2 > 0)
+        else if (pointPosition2 > Epsilon)
             back = toCheck.P2;
         else
             back = toCheck.P3;
         
-        if (pointPosition1 == 0)
+        if (pointPosition1 > -Epsilon && pointPosition1 < Epsilon)
             plain = toCheck.P1;
-        else if (pointPosition2 == 0)
+        else if (pointPosition2 > -Epsilon && pointPosition2 < Epsilon)
             plain = toCheck.P2;
         else
             plain = toCheck.P3;
@@ -169,18 +173,23 @@ public class BSPTreeBuilder
         Point sideA1, sideA2, sideB1;
         (sideA1, sideA2, sideB1) = GetPreparedPointsForHardDivide(toCheck, mainTriangle);
 
-        Point3D intersectionPoint1Position = GetPoinfOfIntersection(sideA1.CurrentPosition, sideB1.CurrentPosition, mainTriangle);
-        Point3D intersectionPoint1OriginalPosition =
+        Point3D? intersectionPoint1Position = GetPoinfOfIntersection(sideA1.CurrentPosition, sideB1.CurrentPosition, mainTriangle);
+        Point3D? intersectionPoint1OriginalPosition =
             GetPoinfOfIntersection(sideA1.OriginalPosition, sideB1.OriginalPosition, mainTriangle);
+        if (intersectionPoint1Position == null || intersectionPoint1OriginalPosition == null)
+                    return newTriangles;
+        
         Point intersectionPoint1 = new Point(intersectionPoint1OriginalPosition, intersectionPoint1Position);
         
-        Point3D intersectionPoint2Position = GetPoinfOfIntersection(sideA2.CurrentPosition, sideB1.CurrentPosition, mainTriangle);
-        Point3D intersectionPoint2OriginalPosition =
+        Point3D? intersectionPoint2Position = GetPoinfOfIntersection(sideA2.CurrentPosition, sideB1.CurrentPosition, mainTriangle);
+        Point3D? intersectionPoint2OriginalPosition =
             GetPoinfOfIntersection(sideA2.OriginalPosition, sideB1.OriginalPosition, mainTriangle);
+        if (intersectionPoint2Position == null || intersectionPoint2OriginalPosition == null)
+                    return newTriangles;
+        
         Point intersectionPoint2 = new Point(intersectionPoint2OriginalPosition, intersectionPoint2Position);
-
-
-        Random rand = new Random();
+        
+        
         Triangle t1 = new Triangle(sideA1, intersectionPoint1, intersectionPoint2);
         // t1.color[0] = rand.Next(255);
         // t1.color[1] = rand.Next(255);
@@ -199,12 +208,12 @@ public class BSPTreeBuilder
         newTriangles.Add(t2);
         newTriangles.Add(t3);
         
-        trianglesToRemoveFromWorld.Add(toCheck);
-        newTrianglesToWorld.Add(t1);
-        newTrianglesToWorld.Add(t2);
-        newTrianglesToWorld.Add(t3);
-        newPointToWorld.Add(intersectionPoint1);
-        newPointToWorld.Add(intersectionPoint2);
+        TrianglesToRemoveFromWorld.Add(toCheck);
+        NewTrianglesToWorld.Add(t1);
+        NewTrianglesToWorld.Add(t2);
+        NewTrianglesToWorld.Add(t3);
+        NewPointToWorld.Add(intersectionPoint1);
+        NewPointToWorld.Add(intersectionPoint2);
         
         return newTriangles;
     }
@@ -219,7 +228,7 @@ public class BSPTreeBuilder
         double pointPosition3 = mainTriangle.CheckPointPosition(toCheck.P3.CurrentPosition);
 
         sideA1 = toCheck.P1;
-        if (pointPosition1 < 0 && pointPosition2 < 0 || pointPosition1 > 0 && pointPosition2 > 0)
+        if (pointPosition1 < -Epsilon && pointPosition2 < -Epsilon || pointPosition1 > Epsilon && pointPosition2 > Epsilon)
         {
             sideA2 = toCheck.P2;
             sideB1 = toCheck.P3;
@@ -228,7 +237,7 @@ public class BSPTreeBuilder
         {
             sideA2 = toCheck.P3;
             
-            if (pointPosition1 < 0 && pointPosition3 < 0 || pointPosition1 > 0 && pointPosition3 > 0)
+            if (pointPosition1 < -Epsilon && pointPosition3 < -Epsilon || pointPosition1 > Epsilon && pointPosition3 > Epsilon)
             {
                 sideB1 = toCheck.P2;
             }
@@ -247,7 +256,7 @@ public class BSPTreeBuilder
     {
         Random rnd = new();
         Triangle randTriangle = triangles[rnd.Next(triangles.Count)];
-        // triangles.Remove(randTriangle);
+        triangles.Remove(randTriangle);
         return randTriangle;
     }
 
@@ -258,25 +267,25 @@ public class BSPTreeBuilder
         bool isOnPlain = false;
 
         double pointPosition = mainTriangle.CheckPointPosition(toCheck.P1.CurrentPosition);
-        if (pointPosition < 0)
+        if (pointPosition < -Epsilon)
             isFront = true;
-        else if (pointPosition > 0)
+        else if (pointPosition > Epsilon)
             isBack = true;
         else
             isOnPlain = true;
         
         pointPosition = mainTriangle.CheckPointPosition(toCheck.P2.CurrentPosition);
-        if (pointPosition < 0)
+        if (pointPosition < -Epsilon)
             isFront = true;
-        else if (pointPosition > 0)
+        else if (pointPosition > Epsilon)
             isBack = true;
         else
             isOnPlain = true;
         
         pointPosition = mainTriangle.CheckPointPosition(toCheck.P3.CurrentPosition);
-        if (pointPosition < 0)
+        if (pointPosition < -Epsilon)
             isFront = true;
-        else if (pointPosition > 0)
+        else if (pointPosition > Epsilon)
             isBack = true;
         else
             isOnPlain = true;
@@ -295,7 +304,7 @@ public class BSPTreeBuilder
     
     
 
-    public Node ChooseBestBSPTree(List<Node> roots)
+    public Node? ChooseBestBSPTree(List<Node> roots)
     {
         if (roots.Count == 0)
             return null;

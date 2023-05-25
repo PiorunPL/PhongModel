@@ -12,6 +12,7 @@ public class Node
     public Node(Triangle plane)
     {
         Plane = plane;
+        Triangles.Add(plane);
     }
 
     public int GetMaxDepth()
