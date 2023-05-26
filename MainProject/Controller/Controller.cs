@@ -10,7 +10,7 @@ namespace MainProject.Controller;
 
 public class Controller
 {
-    private readonly WorldSphere _world = new(2, 5);
+    private readonly WorldSphere _world = new();
     private readonly Camera _camera = new Camera();
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
     private readonly BSPTreeBuilder _bspTreeBuilder = new BSPTreeBuilder();
@@ -18,31 +18,20 @@ public class Controller
 
     public Controller()
     {
-        // _world.SetUpBasicWorld();
-        // Console.WriteLine("before get best bsp: " + _world.Triangles.Count);
         Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 1);
-        // Console.WriteLine(tempNode.GetMaxDepth());s
-        // Console.WriteLine("bsp tree: " + tempNode);
-        // Console.WriteLine("bsp tree Back node: " + tempNode.Back);
-        // Console.WriteLine("bsp tree Front node: " + tempNode.Front);
         
-        // Node.TraverseAndWriteOutput(tempNode);
         if (tempNode == null)
             throw new ApplicationException();
         _BSPTreeRoot = tempNode;
         
         //Update world, after dividing triangles
         //Important! First Add new Triangles, then remove old ones
-        // Console.WriteLine("before add range: " + _world.Triangles.Count);
         _world.Triangles.AddRange(_bspTreeBuilder.NewTrianglesToWorld);
-        // Console.WriteLine("after add range: " + _world.Triangles.Count);
         _world.Points.AddRange(_bspTreeBuilder.NewPointToWorld);
         foreach (var triangle in _bspTreeBuilder.TrianglesToRemoveFromWorld)
         {
             _world.Triangles.Remove(triangle);
         }
-        // Console.WriteLine("after remove: " + _world.Triangles.Count);
-        
     }
     
     public SKBitmap CreatePhoto()
@@ -71,11 +60,7 @@ public class Controller
         //TODO: Order Triangles
         PainingAlgorithOrder PAO = new PainingAlgorithOrder();
         PAO.CreateTrianglesOrder(_BSPTreeRoot);
-        // Console.WriteLine("before size: " + _world.Triangles.Count);
-        // Console.WriteLine("order size: " + PAO.Order.Count);
         var orderedTriangles = PAO.Order;
-        // _world.Triangles.Reverse();
-
         var chosenTriangles = TrianglesChooser.ChooseOnlyTrianglesAhead(orderedTriangles);
         
         _camera.PassActualWorld(chosenTriangles);
