@@ -13,10 +13,11 @@ public class Triangle
 
     public Triangle(Point p1, Point p2, Point p3)
     {
+        Random rand = new Random();
         P1 = p1;
         P2 = p2;
         P3 = p3;
-        this.color = new int[] { 255, 0, 0 };
+        this.color = new int[] { rand.Next(256), rand.Next(256), rand.Next(256) };
         Normal = GetNormalVector();
     }
 

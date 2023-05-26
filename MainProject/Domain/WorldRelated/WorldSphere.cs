@@ -7,7 +7,7 @@ public class WorldSphere
     public List<Triangle> Triangles = new List<Triangle>();
     public List<Point> Points = new List<Point>();
 
-    public Point center = new Point(0, 0, 0);
+    public Point center = new Point(0, 0, 20);
 
     public List<int[]> Colors = new List<int[]>()
     {
@@ -19,24 +19,24 @@ public class WorldSphere
         new int[]{ 255, 240, 0 }
     };
     
-    public WorldSphere(int levelOfTeselation)
+    public WorldSphere(int levelOfTeselation, double size)
     {
         var t = (1.0 + Math.Sqrt(5.0)) / 2.0;
 
-        Point p0 = new Point(-1, t, 0);
-        Point p1 = new Point(1, t, 0);
-        Point p2 = new Point(-1, -t, 0);
-        Point p3 = new Point(1, -t, 0);
+        Point p0 = new Point(center.CurrentPosition.X  -1*size,center.CurrentPosition.Y + t*size, center.CurrentPosition.Z +0);
+        Point p1 = new Point(center.CurrentPosition.X +1*size, center.CurrentPosition.Y +t*size, center.CurrentPosition.Z +0);
+        Point p2 = new Point(center.CurrentPosition.X -1*size, center.CurrentPosition.Y -t*size, center.CurrentPosition.Z +0);
+        Point p3 = new Point(center.CurrentPosition.X +1*size, center.CurrentPosition.Y -t*size, center.CurrentPosition.Z +0);
         
-        Point p4 = new Point(0,-1,t);
-        Point p5 = new Point(0,1,t);
-        Point p6 = new Point(0,-1,-t);
-        Point p7 = new Point(0,1,-t);
+        Point p4 = new Point(center.CurrentPosition.X +0*size,center.CurrentPosition.Y -1*size,center.CurrentPosition.Z +t*size);
+        Point p5 = new Point(center.CurrentPosition.X +0*size,center.CurrentPosition.Y +1*size,center.CurrentPosition.Z +t*size);
+        Point p6 = new Point(center.CurrentPosition.X +0*size,center.CurrentPosition.Y -1*size,center.CurrentPosition.Z -t*size);
+        Point p7 = new Point(center.CurrentPosition.X +0*size,center.CurrentPosition.Y +1*size,center.CurrentPosition.Z -t*size);
         
-        Point p8 = new Point(t,0,-1);
-        Point p9 = new Point(t,0,1);
-        Point p10 = new Point(-t,0,-1);
-        Point p11 = new Point(-t,0,1);
+        Point p8 = new Point(center.CurrentPosition.X +t*size,center.CurrentPosition.Y +0,center.CurrentPosition.Z -1*size);
+        Point p9 = new Point(center.CurrentPosition.X +t*size,center.CurrentPosition.Y +0,center.CurrentPosition.Z +1*size);
+        Point p10 = new Point(center.CurrentPosition.X -t*size,center.CurrentPosition.Y +0,center.CurrentPosition.Z -1*size);
+        Point p11 = new Point(center.CurrentPosition.X -t*size,center.CurrentPosition.Y +0,center.CurrentPosition.Z +1*size);
 
         Random rand = new Random();
 
@@ -95,7 +95,7 @@ public class WorldSphere
         Triangles.Add(t18);
         Triangles.Add(t19);
 
-        double radius = Vector.GetVector(new Point3D(0, 0, 0), p0.CurrentPosition).GetLength();
+        double radius = Vector.GetVector(center.CurrentPosition, p0.CurrentPosition).GetLength();
         
         Console.WriteLine("Promien: " + radius);
         Console.WriteLine("T: " + t);
@@ -110,20 +110,23 @@ public class WorldSphere
                 Point middlePoint2 = GetMiddlePoint(triangle.P1, triangle.P3);
                 Point middlePoint3 = GetMiddlePoint(triangle.P2, triangle.P3);
                 
-                //TODO: Move point to be in specified length from center
+                //Move point to be in specified length from center
                 Vector centerToMiddlePoint1 = Vector.GetVector(center.CurrentPosition, middlePoint1.CurrentPosition);
+                // Vector centerToMiddlePoint1 = Vector.GetVector( middlePoint1.CurrentPosition, center.CurrentPosition);
                 centerToMiddlePoint1.SetLength(radius);
                 middlePoint1 = new Point(center.CurrentPosition.X + centerToMiddlePoint1.X,
                     center.CurrentPosition.Y + centerToMiddlePoint1.Y,
                     center.CurrentPosition.Z + centerToMiddlePoint1.Z);
                 
                 Vector centerToMiddlePoint2 = Vector.GetVector(center.CurrentPosition, middlePoint2.CurrentPosition);
+                // Vector centerToMiddlePoint2 = Vector.GetVector(middlePoint2.CurrentPosition, center.CurrentPosition );
                 centerToMiddlePoint2.SetLength(radius);
                 middlePoint2 = new Point(center.CurrentPosition.X + centerToMiddlePoint2.X,
                     center.CurrentPosition.Y + centerToMiddlePoint2.Y,
                     center.CurrentPosition.Z + centerToMiddlePoint2.Z);
                 
                 Vector centerToMiddlePoint3 = Vector.GetVector(center.CurrentPosition, middlePoint3.CurrentPosition);
+                // Vector centerToMiddlePoint3 = Vector.GetVector(middlePoint3.CurrentPosition, center.CurrentPosition);
                 centerToMiddlePoint3.SetLength(radius);
                 middlePoint3 = new Point(center.CurrentPosition.X + centerToMiddlePoint3.X,
                     center.CurrentPosition.Y + centerToMiddlePoint3.Y,

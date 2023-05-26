@@ -10,7 +10,7 @@ namespace MainProject.Controller;
 
 public class Controller
 {
-    private readonly WorldSphere _world = new(5);
+    private readonly WorldSphere _world = new(2, 5);
     private readonly Camera _camera = new Camera();
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
     private readonly BSPTreeBuilder _bspTreeBuilder = new BSPTreeBuilder();
