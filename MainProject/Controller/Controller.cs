@@ -64,6 +64,7 @@ public class Controller
         var chosenTriangles = TrianglesChooser.ChooseOnlyTrianglesAhead(orderedTriangles);
         
         _camera.PassActualWorld(chosenTriangles);
+        _camera.PassAllLights(_world.Lights);
         var result = _camera.CreatePhotoTriangles();
 
         return result;

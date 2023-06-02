@@ -7,21 +7,14 @@ public class Sphere
     public List<Triangle> Triangles = new List<Triangle>();
     public List<Point> Points = new List<Point>();
     public Point Center;
-    
-    public List<int[]> Colors = new List<int[]>()
-    {
-        new int[]{ 255, 40, 0 },
-        new int[]{ 255, 80, 0 },
-        new int[]{ 255, 120, 0 },
-        new int[]{ 255, 160, 0 },
-        new int[]{ 255, 200, 0 },
-        new int[]{ 255, 240, 0 }
-    };
 
-    public Sphere(Point center, int levelOfTeselation, double size, double epsilon)
+    public int[] Color;
+
+    public Sphere(Point center, int levelOfTeselation, double size, double epsilon, int[] color)
     {
         Center = center;
         Points.Add(center);
+        Color = color;
         GenerateSphere(levelOfTeselation, size, epsilon);
     }
 
@@ -46,26 +39,27 @@ public class Sphere
 
         Random rand = new Random();
 
-        Triangle t0 = new Triangle(p0, p11, p5, Colors[rand.Next(6)]);
-        Triangle t1 = new Triangle(p0, p5, p1, Colors[rand.Next(6)]);
-        Triangle t2 = new Triangle(p0, p1, p7, Colors[rand.Next(6)]);
-        Triangle t3 = new Triangle(p0, p7, p10, Colors[rand.Next(6)]);
-        Triangle t4 = new Triangle(p0, p10, p11, Colors[rand.Next(6)]);
-        Triangle t5 = new Triangle(p1, p5, p9, Colors[rand.Next(6)]);
-        Triangle t6 = new Triangle(p5, p11, p4, Colors[rand.Next(6)]);
-        Triangle t7 = new Triangle(p11, p10, p2, Colors[rand.Next(6)]);
-        Triangle t8 = new Triangle(p10, p7, p6, Colors[rand.Next(6)]);
-        Triangle t9 = new Triangle(p7, p1, p8, Colors[rand.Next(6)]);
-        Triangle t10 = new Triangle(p3, p9, p4, Colors[rand.Next(6)]);
-        Triangle t11 = new Triangle(p3, p4, p2, Colors[rand.Next(6)]);
-        Triangle t12 = new Triangle(p3, p2, p6, Colors[rand.Next(6)]);
-        Triangle t13 = new Triangle(p3, p6, p8, Colors[rand.Next(6)]);
-        Triangle t14 = new Triangle(p3, p8, p9, Colors[rand.Next(6)]);
-        Triangle t15 = new Triangle(p4, p9, p5, Colors[rand.Next(6)]);
-        Triangle t16 = new Triangle(p2, p4, p11, Colors[rand.Next(6)]);
-        Triangle t17 = new Triangle(p6, p2, p10, Colors[rand.Next(6)]);
-        Triangle t18 = new Triangle(p8, p6, p7, Colors[rand.Next(6)]);
-        Triangle t19 = new Triangle(p9, p8, p1, Colors[rand.Next(6)]);
+        Triangle t0 = new Triangle(p0, p11, p5, Color);
+        Triangle t1 = new Triangle(p0, p5, p1, Color);
+        Triangle t2 = new Triangle(p0, p1, p7, Color);
+        Triangle t3 = new Triangle(p0, p7, p10, Color);
+        var color = Color;
+        Triangle t4 = new Triangle(p0, p10, p11, color);
+        Triangle t5 = new Triangle(p1, p5, p9, color);
+        Triangle t6 = new Triangle(p5, p11, p4, color);
+        Triangle t7 = new Triangle(p11, p10, p2, color);
+        Triangle t8 = new Triangle(p10, p7, p6, color);
+        Triangle t9 = new Triangle(p7, p1, p8, color);
+        Triangle t10 = new Triangle(p3, p9, p4, color);
+        Triangle t11 = new Triangle(p3, p4, p2, color);
+        Triangle t12 = new Triangle(p3, p2, p6, color);
+        Triangle t13 = new Triangle(p3, p6, p8, color);
+        Triangle t14 = new Triangle(p3, p8, p9, color);
+        Triangle t15 = new Triangle(p4, p9, p5, color);
+        Triangle t16 = new Triangle(p2, p4, p11, color);
+        Triangle t17 = new Triangle(p6, p2, p10, color);
+        Triangle t18 = new Triangle(p8, p6, p7, color);
+        Triangle t19 = new Triangle(p9, p8, p1, color);
         
         Points.Add(p0);
         Points.Add(p1);
@@ -138,10 +132,10 @@ public class Sphere
                     Center.CurrentPosition.Y + centerToMiddlePoint3.Y,
                     Center.CurrentPosition.Z + centerToMiddlePoint3.Z);
 
-                Triangle nt1 = new Triangle(triangle.P1, middlePoint1, middlePoint2, new []{rand.Next(256), rand.Next(256), rand.Next(256)});
-                Triangle nt2 = new Triangle(middlePoint1, middlePoint2, middlePoint3, new []{rand.Next(256), rand.Next(256), rand.Next(256)});
-                Triangle nt3 = new Triangle(triangle.P2, middlePoint1, middlePoint3, new []{rand.Next(256), rand.Next(256), rand.Next(256)});
-                Triangle nt4 = new Triangle(triangle.P3, middlePoint2, middlePoint3, new []{rand.Next(256), rand.Next(256), rand.Next(256)});
+                Triangle nt1 = new Triangle(triangle.P1, middlePoint1, middlePoint2, Color);
+                Triangle nt2 = new Triangle(middlePoint1, middlePoint2, middlePoint3, Color);
+                Triangle nt3 = new Triangle(triangle.P2, middlePoint1, middlePoint3, Color);
+                Triangle nt4 = new Triangle(triangle.P3, middlePoint2, middlePoint3, Color);
                 
                 Triangles.Add(nt1);
                 Triangles.Add(nt2);
@@ -166,6 +160,11 @@ public class Sphere
         Console.WriteLine(Points.Count);
         
         //TODO: Invert triangles if normal is towards center of sphere
+        foreach (var triangle in Triangles)
+        {
+            if (triangle.CheckPointPosition(Center.CurrentPosition) > 0)
+                triangle.SwapNormalVector();
+        }
     }
     
     private void ChangePointInTriangle(Point point, Triangle triangle, double epsilon)

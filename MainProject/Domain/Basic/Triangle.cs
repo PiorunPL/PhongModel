@@ -56,4 +56,17 @@ public class Triangle
     {
         return Vector.GetDotProduct(GetNormalVector(), Vector.GetVector(P1.CurrentPosition, toCheck));
     }
+
+    public void SwapNormalVector()
+    {
+        (P2, P3) = (P3, P2);
+    }
+
+    public Point3D GetCentralPoint()
+    {
+        double xc = (P1.CurrentPosition.X + P2.CurrentPosition.X + P3.CurrentPosition.X) / 3;
+        double yc = (P1.CurrentPosition.Y + P2.CurrentPosition.Y + P3.CurrentPosition.Y) / 3;
+        double zc = (P1.CurrentPosition.Z + P2.CurrentPosition.Z + P3.CurrentPosition.Z) / 3;
+        return new Point3D(xc, yc, zc);
+    }
 }
