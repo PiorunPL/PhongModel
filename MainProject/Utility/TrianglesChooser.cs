@@ -38,10 +38,10 @@ public static class TrianglesChooser
                                     Point intersectionPoint2 = new Point(intersectionPoint2OriginalPosition, intersectionPoint2Position);
                                     
                                     Triangle t1 = new Triangle(sideA1, intersectionPoint1, intersectionPoint2);
-                                    t1.color = currentTriangle.color;
+                                    t1.Material = currentTriangle.Material;
                                     
                                     Triangle t2 = new Triangle(sideA1, sideA2, intersectionPoint2);
-                                    t2.color = currentTriangle.color;
+                                    t2.Material = currentTriangle.Material;
                                     
                                     chosenTriangles.Add(t1);
                                     chosenTriangles.Add(t2);
@@ -66,7 +66,7 @@ public static class TrianglesChooser
                     Point intersectionPoint = new Point(intersectionPointOriginalPosition, intersectionPointPosition);
 
                     Triangle t1 = new Triangle(front, plane, intersectionPoint);
-                    t1.color = currentTriangle.color;
+                    t1.Material = currentTriangle.Material;
                     
                     chosenTriangles.Add(t1);
                 }
@@ -86,7 +86,7 @@ public static class TrianglesChooser
                     Point intersectionPoint2 = new Point(intersectionPoint2OriginalPosition, intersectionPoint2Position);
 
                     Triangle t = new Triangle(intersectionPoint1, intersectionPoint2, sideB1);
-                    t.color = currentTriangle.color;
+                    t.Material = currentTriangle.Material;
                     
                     chosenTriangles.Add(t);
                 }

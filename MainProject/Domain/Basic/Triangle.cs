@@ -1,3 +1,5 @@
+using MainProject.Domain.Materials;
+
 namespace MainProject.Domain.Basic;
 
 public class Triangle
@@ -9,7 +11,7 @@ public class Triangle
     public Vector
         Normal; //Currently not using, problem with Normal changing, while moving/rotating (camera coordinate system)
 
-    public int[] color;
+    public Material Material;
 
     public Triangle(Point p1, Point p2, Point p3)
     {
@@ -17,16 +19,16 @@ public class Triangle
         P1 = p1;
         P2 = p2;
         P3 = p3;
-        this.color = new int[] { rand.Next(256), rand.Next(256), rand.Next(256) };
+        Material = Material.Bronze;
         Normal = GetNormalVector();
     }
 
-    public Triangle(Point p1, Point p2, Point p3, int[] color)
+    public Triangle(Point p1, Point p2, Point p3, Material material)
     {
         P1 = p1;
         P2 = p2;
         P3 = p3;
-        this.color = color;
+        Material = material;
         Normal = GetNormalVector();
     }
 

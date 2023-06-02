@@ -79,13 +79,6 @@ public class BitmapUtil
 
             var cameraVector = Vector.GetVector(centralPoint, new Point3D(0, 0, 0)).GetNormalized();
             
-            // Console.WriteLine(normalisedNormal);
-
-            // byte light = 5;
-            // byte baselight = 0;
-            
-
-            
             double specular_wsp = Vector.GetDotProduct(reflectionVector, cameraVector);
 
             if (diffues_wsp < 0)
@@ -94,42 +87,20 @@ public class BitmapUtil
             if (specular_wsp < 0)
                 specular_wsp = 0;
             
-            double ambient_wsp_red = 0.2125;
-            double ambient_wsp_green = 0.1275;
-            double ambient_wsp_blue = 0.054;
-
-
-            double diffuse_wsp_red = 0.714;
-            double diffuse_wsp_green = 0.4284;
-            double diffuse_wsp_blue = 0.18144;
-
-            double specular_wsp_red = 0.393548;
-            double specular_wsp_green = 0.271906;
-            double specular_wsp_blue = 0.166721;
-
-            double shininess = 0.2 * 128;
-
-            int triangle_red = 0;
-            int triangle_green = 0;
-            int triangle_blue = 0;
-
-            specular_wsp = Math.Pow(specular_wsp, shininess);
+            specular_wsp = Math.Pow(specular_wsp, triangle.Material.Shininess);
             
             int red = (int)(
-                triangle_red + 
-                (light.Red * ambient_wsp_red) + 
-                (light.Red * diffuse_wsp_red * diffues_wsp) + 
-                (light.Red * specular_wsp_red * specular_wsp));
+                (light.Red * triangle.Material.AmbientRed) + 
+                (light.Red * triangle.Material.DiffuseRed * diffues_wsp) + 
+                (light.Red * triangle.Material.SpecularRed * specular_wsp));
             int green = (int)(
-                triangle_green + 
-                (light.Green * ambient_wsp_green) + 
-                (light.Green * diffuse_wsp_green * diffues_wsp) +
-                (light.Green * specular_wsp_green * specular_wsp));
+                (light.Green * triangle.Material.AmbientGreen) + 
+                (light.Green * triangle.Material.DiffuseGreen * diffues_wsp) +
+                (light.Green * triangle.Material.SpecularGreen * specular_wsp));
             int blue = (int)(
-                triangle_blue + 
-                (light.Blue * ambient_wsp_blue) + 
-                (light.Blue * diffuse_wsp_blue * diffues_wsp) + 
-                (light.Blue * specular_wsp_blue * specular_wsp));
+                (light.Blue * triangle.Material.AmbientBlue) + 
+                (light.Blue * triangle.Material.DiffuseBlue * diffues_wsp) + 
+                (light.Blue * triangle.Material.SpecularBlue * specular_wsp));
 
             if (red > 255)
                 red = 255;

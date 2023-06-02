@@ -1,4 +1,5 @@
 using MainProject.Domain.Basic;
+using MainProject.Domain.Materials;
 
 namespace MainProject.Domain.WorldRelated;
 
@@ -16,7 +17,7 @@ public class WorldSphere
     
     public WorldSphere()
     {
-        Sphere s1 = new Sphere(Center, 4, 5.0, Epsilon, new []{50, 20, 20});
+        Sphere s1 = new Sphere(Center, 3, 5.0, Epsilon, Material.YellowRubber);
         Spheres.Add(s1);
         Triangles.AddRange(s1.Triangles);
         Points.AddRange(s1.Points);
