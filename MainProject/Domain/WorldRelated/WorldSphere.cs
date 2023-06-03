@@ -17,16 +17,26 @@ public class WorldSphere
     
     public WorldSphere()
     {
-        Sphere s1 = new Sphere(Center, 3, 5.0, Epsilon, Material.YellowRubber);
+        Sphere s1 = new Sphere(Center, 4, 5.0, Epsilon, Material.Gold);
         Spheres.Add(s1);
         Triangles.AddRange(s1.Triangles);
         Points.AddRange(s1.Points);
 
 
-        Point lightPosition = new Point(100, 50, 0);
-        Light light = new Light(lightPosition);
-        Lights.Add(light);
-        Points.Add(lightPosition);
+        Point light1Position = new Point(100, 50, 0);
+        Light light1 = new Light(light1Position, 50, 255, 50);
+        Lights.Add(light1);
+        Points.Add(light1Position);
+
+        Point light2Position = new Point(0, 100, 20);
+        Light light2 = new Light(light2Position);
+        Lights.Add(light2);
+        Points.Add(light2Position);
+
+        Point light3Position = new Point(-100, -20, 0);
+        Light light3 = new Light(light3Position, 255, 50, 50);
+        Lights.Add(light3);
+        Points.Add(light3Position);
     }
 
     
