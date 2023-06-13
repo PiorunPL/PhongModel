@@ -63,4 +63,11 @@ public class Vector
     {
         return String.Format("[X: {0}; Y: {1}; Z: {2}]", X, Y, Z);
     }
+
+    public void MultipleByScalar(double factor)
+    {
+        X = X * factor;
+        Y = Y * factor;
+        Z = Z * factor;
+    }
 }

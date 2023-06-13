@@ -1,4 +1,5 @@
 using MainProject.Domain.Basic;
+using MainProject.Domain.WorldRelated;
 using MainProject.Utility;
 using SkiaSharp;
 
@@ -10,6 +11,7 @@ public class Camera
     // public List<Point2D> ViewPortPoints = new List<Point2D>();
     public List<Line> Lines = new List<Line>();
     public List<Triangle> Triangles = new List<Triangle>();
+    public List<Light> Lights = new List<Light>();
     public BitmapUtil BitmapUtil;
 
     public Camera()
@@ -24,7 +26,7 @@ public class Camera
 
     public SKBitmap CreatePhotoTriangles()
     {
-        return BitmapUtil.GetBitmapFromTriangles(Triangles);
+        return BitmapUtil.GetBitmapFromTriangles(Triangles, Lights);
     }
 
     public void PassActualWorld(List<Line> lines)
@@ -37,5 +39,11 @@ public class Camera
     {
         Triangles.Clear();
         Triangles.AddRange(triangles);
+    }
+
+    public void PassAllLights(List<Light> lights)
+    {
+        Lights.Clear();
+        Lights.AddRange(lights);
     }
 }

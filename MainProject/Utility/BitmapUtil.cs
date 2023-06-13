@@ -1,5 +1,6 @@
 using MainProject.Domain.Basic;
 using MainProject.Domain.CameraRelated;
+using MainProject.Domain.WorldRelated;
 using SkiaSharp;
 using Point = MainProject.Domain.Basic.Point;
 
@@ -46,7 +47,7 @@ public class BitmapUtil
         return bitmap;
     }
 
-    public SKBitmap GetBitmapFromTriangles(List<Triangle> triangles)
+    public SKBitmap GetBitmapFromTriangles(List<Triangle> triangles, List<Light> lights)
     {
         SKBitmap bitmap = new SKBitmap(targetWidth, targetHeight, true);
         SKCanvas canvas = new SKCanvas(bitmap);
@@ -59,21 +60,72 @@ public class BitmapUtil
         };
         
         foreach (var triangle in triangles)
-        {
+        {   
+            
+            int red = 0;
+            int green = 0;
+            int blue = 0;
+
             var normal = triangle.GetNormalVector();
             var normalisedNormal = triangle.GetNormalisedNormalVector();
-            // Console.WriteLine(normalisedNormal);
+            var centralPoint = triangle.GetCentralPoint();
 
-            byte light = 5;
-            byte baselight = 0;
-            int red = triangle.color[0];
-            int green = triangle.color[1];
-            int blue = triangle.color[2];
+            foreach (var light in lights)
+            {
+
+
+                var lightVector = Vector.GetVector(centralPoint, light.CenterPosition.CurrentPosition).GetNormalized();
+                double diffues_wsp = Vector.GetDotProduct(normalisedNormal, lightVector);
+
+                var reflectionVector = new Vector()
+                {
+                    X = normalisedNormal.X * 2 * diffues_wsp - lightVector.X,
+                    Y = normalisedNormal.Y * 2 * diffues_wsp - lightVector.Y,
+                    Z = normalisedNormal.Z * 2 * diffues_wsp - lightVector.Z
+                }.GetNormalized();
+
+                var cameraVector = Vector.GetVector(centralPoint, new Point3D(0, 0, 0)).GetNormalized();
+
+                double specular_wsp = Vector.GetDotProduct(reflectionVector, cameraVector);
+
+                if (diffues_wsp < 0)
+                    diffues_wsp = 0;
+
+                if (specular_wsp < 0)
+                    specular_wsp = 0;
+
+                specular_wsp = Math.Pow(specular_wsp, triangle.Material.Shininess);
+
+                int redForLight = (int)(
+                    (light.Red * triangle.Material.AmbientRed) +
+                    (light.Red * triangle.Material.DiffuseRed * diffues_wsp) +
+                    (light.Red * triangle.Material.SpecularRed * specular_wsp));
+                int greenForLight = (int)(
+                    (light.Green * triangle.Material.AmbientGreen) +
+                    (light.Green * triangle.Material.DiffuseGreen * diffues_wsp) +
+                    (light.Green * triangle.Material.SpecularGreen * specular_wsp));
+                int blueForLight = (int)(
+                    (light.Blue * triangle.Material.AmbientBlue) +
+                    (light.Blue * triangle.Material.DiffuseBlue * diffues_wsp) +
+                    (light.Blue * triangle.Material.SpecularBlue * specular_wsp));
+
+                red += redForLight;
+                green += greenForLight;
+                blue += blueForLight;
+
+            }
+
+            if (red > 255)
+                red = 255;
+            if (green > 255)
+                green = 255;
+            if (blue > 255)
+                blue = 255;
 
             pathStroke.Color = new SKColor(
-                (byte)(red * light + baselight),
-                (byte)(green * light + baselight),
-                (byte)(blue * light + baselight));
+                (byte)(red),
+                (byte)(green),
+                (byte)(blue));
 
             (int x1, int y1) = triangle.P1.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
             (int x2, int y2) = triangle.P2.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
