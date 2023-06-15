@@ -9,6 +9,7 @@ public class Sphere
     public List<Point> Points = new List<Point>();
     public Point Center;
     public Material Material;
+    public double Radius;
 
     public Sphere(Point center, int levelOfTeselation, double size, double epsilon, Material material)
     {
@@ -94,9 +95,9 @@ public class Sphere
         Triangles.Add(t18);
         Triangles.Add(t19);
 
-        double radius = Vector.GetVector(Center.CurrentPosition, p0.CurrentPosition).GetLength();
+        Radius = Vector.GetVector(Center.CurrentPosition, p0.CurrentPosition).GetLength();
         
-        Console.WriteLine("Promien: " + radius);
+        Console.WriteLine("Promien: " + Radius);
         Console.WriteLine("T: " + t);
 
         for (int i = 0; i < levelOfTeselation; i++)
@@ -112,21 +113,21 @@ public class Sphere
                 //Move point to be in specified length from center
                 Vector centerToMiddlePoint1 = Vector.GetVector(Center.CurrentPosition, middlePoint1.CurrentPosition);
                 // Vector centerToMiddlePoint1 = Vector.GetVector( middlePoint1.CurrentPosition, center.CurrentPosition);
-                centerToMiddlePoint1.SetLength(radius);
+                centerToMiddlePoint1.SetLength(Radius);
                 middlePoint1 = new Point(Center.CurrentPosition.X + centerToMiddlePoint1.X,
                     Center.CurrentPosition.Y + centerToMiddlePoint1.Y,
                     Center.CurrentPosition.Z + centerToMiddlePoint1.Z);
                 
                 Vector centerToMiddlePoint2 = Vector.GetVector(Center.CurrentPosition, middlePoint2.CurrentPosition);
                 // Vector centerToMiddlePoint2 = Vector.GetVector(middlePoint2.CurrentPosition, center.CurrentPosition );
-                centerToMiddlePoint2.SetLength(radius);
+                centerToMiddlePoint2.SetLength(Radius);
                 middlePoint2 = new Point(Center.CurrentPosition.X + centerToMiddlePoint2.X,
                     Center.CurrentPosition.Y + centerToMiddlePoint2.Y,
                     Center.CurrentPosition.Z + centerToMiddlePoint2.Z);
                 
                 Vector centerToMiddlePoint3 = Vector.GetVector(Center.CurrentPosition, middlePoint3.CurrentPosition);
                 // Vector centerToMiddlePoint3 = Vector.GetVector(middlePoint3.CurrentPosition, center.CurrentPosition);
-                centerToMiddlePoint3.SetLength(radius);
+                centerToMiddlePoint3.SetLength(Radius);
                 middlePoint3 = new Point(Center.CurrentPosition.X + centerToMiddlePoint3.X,
                     Center.CurrentPosition.Y + centerToMiddlePoint3.Y,
                     Center.CurrentPosition.Z + centerToMiddlePoint3.Z);

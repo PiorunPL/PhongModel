@@ -8,4 +8,5 @@ public class ViewPort
     public double YBottom = -6;
 
     public double Z = 15;
+    public static double Zstatic = 15;
 }

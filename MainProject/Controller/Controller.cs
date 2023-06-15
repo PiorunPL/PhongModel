@@ -18,6 +18,9 @@ public class Controller
 
     public Controller()
     {
+        Triangle t = new Triangle(new Point(-1, 5, 3), new Point(1, 3, 1), new Point(0, 1, 5));
+        var plane = t.GetPlaneOfTriangle();
+        
         Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 1);
         
         if (tempNode == null)
@@ -65,7 +68,7 @@ public class Controller
         
         _camera.PassActualWorld(chosenTriangles);
         _camera.PassAllLights(_world.Lights);
-        var result = _camera.CreatePhotoTriangles();
+        var result = _camera.CreatePhotoTriangles(_world);
 
         return result;
     }

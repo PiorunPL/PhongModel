@@ -1,4 +1,5 @@
 using Accord.Math;
+using MainProject.Domain.CameraRelated;
 
 namespace MainProject.Domain.Basic;
 
@@ -50,6 +51,10 @@ public class Point
     public (int x, int y) getPointCoordinatesBitmap(int width, int height, double d)
     {
         var pointTemp =GetViewPortCoordinates(d);
+        // Console.WriteLine(pointTemp.X);
+        // Console.WriteLine(pointTemp.Y);
+        //
+        // return (0, 0);
         var tempX = pointTemp.X;
         var tempY = pointTemp.Y;
         
@@ -79,5 +84,4 @@ public class Point
     {
         return String.Format("Point [{0}]", CurrentPosition.ToString());
     }
-    
 }
