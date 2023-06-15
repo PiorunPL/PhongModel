@@ -187,6 +187,7 @@ public class BitmapUtil
             // }
 
             var sphere = world.Spheres[0];
+            Point3D center = sphere.Center.CurrentPosition;
             
             var planeOfTriangle = triangle.GetPlaneOfTriangle();
             List<int[]> trianglePixels = triangle.GetAllPixelsInTriangle(targetWidth, targetHeight, ViewPort.Z, sphere.Center.CurrentPosition.Z);
@@ -194,15 +195,22 @@ public class BitmapUtil
             {
                 Point pointOfPixel = GetPointFromPixelOnBitmap(pixel[0], pixel[1], targetWidth, targetHeight);
                 Vector vectorFromObserverToPointOfPixel = GetVectorFromObserverToPointOfPixel(pointOfPixel);
-                Point3D pointOnTriangle =
-                    GetCommonPointOfTriangleAndStraight(vectorFromObserverToPointOfPixel, planeOfTriangle);
+                // Point3D pointOnTriangle =
+                //     GetCommonPointOfTriangleAndStraight(vectorFromObserverToPointOfPixel, planeOfTriangle);
+
+                // vectorFromCenterToPointOnTriangle.SetLength(sphere.Radius);
+                // Point pointOnSphere = new Point(sphere.Center.CurrentPosition.X + vectorFromCenterToPointOnTriangle.X,
+                //     sphere.Center.CurrentPosition.Y + vectorFromCenterToPointOnTriangle.Y,
+                //     sphere.Center.CurrentPosition.Z + vectorFromCenterToPointOnTriangle.Z);
+                Point pointOnSphere = GetPointOnSphere(center.X, center.Y, center.Z, sphere.Radius,
+                    vectorFromObserverToPointOfPixel.X, vectorFromObserverToPointOfPixel.Y,
+                    vectorFromObserverToPointOfPixel.Z);
+                if (pointOnSphere == null)
+                {
+                    continue;
+                }
                 Vector vectorFromCenterToPointOnTriangle = Vector.GetVector(
-                   world.Center.CurrentPosition, pointOnTriangle);
-                vectorFromCenterToPointOnTriangle.SetLength(sphere.Radius);
-                Point pointOnSphere = new Point(sphere.Center.CurrentPosition.X + vectorFromCenterToPointOnTriangle.X,
-                    sphere.Center.CurrentPosition.Y + vectorFromCenterToPointOnTriangle.Y,
-                    sphere.Center.CurrentPosition.Z + vectorFromCenterToPointOnTriangle.Z);
-                // Point pointOnSphere = Get
+                    world.Center.CurrentPosition, pointOnSphere.CurrentPosition);
                 // double lenFromCenterToPointOnTriangle = vectorFromCenterToPointOnTriangle.GetLength();
                 // double lackOfLen = 1 - lenFromCenterToPointOnTriangle / world.Spheres[0].Radius;
                 //
@@ -229,7 +237,7 @@ public class BitmapUtil
 
                 foreach (var light in lights)
                 {
-                    var lightVector = Vector.GetVector(pointOnTriangle, light.CenterPosition.CurrentPosition)
+                    var lightVector = Vector.GetVector(pointOnSphere.CurrentPosition, light.CenterPosition.CurrentPosition)
                         .GetNormalized();
                     double diffues_wsp = Vector.GetDotProduct(normalisedNormal, lightVector);
 
@@ -240,7 +248,7 @@ public class BitmapUtil
                         Z = normalisedNormal.Z * 2 * diffues_wsp - lightVector.Z
                     }.GetNormalized();
 
-                    var cameraVector = Vector.GetVector(pointOnTriangle, new Point3D(0, 0, 0)).GetNormalized();
+                    var cameraVector = Vector.GetVector(pointOnSphere.CurrentPosition, new Point3D(0, 0, 0)).GetNormalized();
 
                     double specular_wsp = Vector.GetDotProduct(reflectionVector, cameraVector);
 
@@ -338,9 +346,9 @@ public class BitmapUtil
     private Point GetPointFromPixelOnBitmap(int pixelX, int pixelY, int targetWidth, int targetHeight)
     {
         double x = (double)(pixelX - targetWidth/2.0) / 50.0;
-        double y = (double)(pixelY - targetHeight/2.0) / 50.0;
+        double y = (double)(pixelY - targetHeight/2.0) / -50.0;
         // TODO: change everywhere to static
-        double z = ViewPort.Zstatic;
+        double z = ViewPort.Z;
         return new Point(x, y, z);
     }
 
@@ -354,5 +362,62 @@ public class BitmapUtil
     {
         double t = -plane[3] / (plane[0] * vector.X + plane[1] * vector.Y + plane[2] * vector.Z);
         return new Point3D(vector.X*t, vector.Y*t, vector.Z*t);
+    }
+
+    private Point GetPointOnSphere(double x, double y, double z, double r, double a, double b, double c)
+    {
+        double[] primary = new double[10];
+        double[] factors = new double[3];
+        primary[0] = a * a;
+        primary[1] = (-2) * a * x;
+        primary[2] = x * x;
+        primary[3] = b * b;
+        primary[4] = (-2) * b * y;
+        primary[5] = y * y;
+        primary[6] = c * c;
+        primary[7] = (-2) * c * z;
+        primary[8] = z * z;
+        primary[9] = r * r;
+
+        factors[0] = primary[0] + primary[3] + primary[6];
+        factors[1] = primary[1] + primary[4] + primary[7];
+        factors[2] = primary[2] + primary[5] + primary[8] - primary[9];
+
+        double delta = factors[1] * factors[1] - 4 * factors[0] * factors[2];
+        double t1 = 0.0;
+        double t2 = 0.0;
+        Boolean oneT = false;
+        if (delta < 0)
+        {
+            return null;
+        }
+
+        if (delta < BSPTreeBuilder.Epsilon && delta > -BSPTreeBuilder.Epsilon)
+        {
+            t1 = -factors[1] / (2 * factors[0]);
+            oneT = true;
+        }
+        else
+        {
+            t1 = (-factors[1] - Math.Sqrt(delta))/(2*factors[0]);
+            t2 = (-factors[1] + Math.Sqrt(delta))/(2*factors[0]);
+        }
+
+        if (oneT)
+        {
+            return new Point(a * t1, b * t1, c * t1);
+        }
+        
+        Point p1 = new Point(a * t1, b * t1, c * t1);
+        Point p2 = new Point(a * t2, b * t2, c * t2);
+
+        if (p1.CurrentPosition.Z > p2.CurrentPosition.Z)
+        {
+            return p2;
+        }
+        else
+        {
+            return p1;
+        }
     }
 }

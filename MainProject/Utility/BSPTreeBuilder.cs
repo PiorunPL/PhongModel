@@ -9,7 +9,7 @@ public class BSPTreeBuilder
     public readonly List<Triangle> NewTrianglesToWorld = new List<Triangle>();
     public readonly List<Triangle> TrianglesToRemoveFromWorld = new List<Triangle>();
     
-    private const double Epsilon = 1.0E-10;
+    public const double Epsilon = 1.0E-10;
     
     public Node? GetBestBSPTree(List<Triangle> triangles, int numberOfTries)
     {
