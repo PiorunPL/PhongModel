@@ -28,6 +28,7 @@ public class MainViewModel : ReactiveObject
     private readonly Vector _dpiVector;
     
     private TimeSpan _readKeyTimeSpan = TimeSpan.FromMilliseconds(5);
+    private TimeSpan _materialTimeSpan = TimeSpan.FromMilliseconds(500);
     private TimeSpan _displayTimeSpan = TimeSpan.FromMilliseconds(20);
     
     private WriteableBitmap? _image;
@@ -141,6 +142,38 @@ public class MainViewModel : ReactiveObject
                 if (_inputController.ObservatorL == null)
                     _inputController.ObservatorL = Observable.Interval(_readKeyTimeSpan).Do(_ => TurnClockwise()).Subscribe();
                 break;
+            case 'z':
+                if (_inputController.ObservatorZ == null)
+                    _inputController.ObservatorZ = Observable.Interval(_readKeyTimeSpan).Do(_ => LightXPlus()).Subscribe();
+                break;
+            case 'x':
+                if (_inputController.ObservatorX == null)
+                    _inputController.ObservatorX = Observable.Interval(_readKeyTimeSpan).Do(_ => LightXMinus()).Subscribe();
+                break;
+            case 'c':
+                if (_inputController.ObservatorC == null)
+                    _inputController.ObservatorC = Observable.Interval(_readKeyTimeSpan).Do(_ => LightYPlus()).Subscribe();
+                break;
+            case 'v':
+                if (_inputController.ObservatorV == null)
+                    _inputController.ObservatorV = Observable.Interval(_readKeyTimeSpan).Do(_ => LightYMinus()).Subscribe();
+                break;
+            case 'b':
+                if (_inputController.ObservatorB == null)
+                    _inputController.ObservatorB = Observable.Interval(_readKeyTimeSpan).Do(_ => LightZPlus()).Subscribe();
+                break;
+            case 'n':
+                if (_inputController.ObservatorN == null)
+                    _inputController.ObservatorN = Observable.Interval(_readKeyTimeSpan).Do(_ => LightZMinus()).Subscribe();
+                break;
+            case 'm':
+                if (_inputController.ObservatorM == null)
+                    _inputController.ObservatorM = Observable.Interval(_materialTimeSpan).Do(_ => ChangeMaterial()).Subscribe();
+                break;
+            case '/':
+                if (_inputController.ObservatorSlash == null)
+                    _inputController.ObservatorSlash = Observable.Interval(_materialTimeSpan).Do(_ => SwapSphere()).Subscribe();
+                break;
             case '-':
                 if (_inputController.ObservatorMinus == null)
                     _inputController.ObservatorMinus = Observable.Interval(_readKeyTimeSpan).Do(_ => ZoomOut()).Subscribe();
@@ -204,6 +237,38 @@ public class MainViewModel : ReactiveObject
                 _inputController.ObservatorL?.Dispose();
                 _inputController.ObservatorL = null;
                 break;
+            case 'z':
+                _inputController.ObservatorZ?.Dispose();
+                _inputController.ObservatorZ = null;
+                break;
+            case 'x':
+                _inputController.ObservatorX?.Dispose();
+                _inputController.ObservatorX = null;
+                break;
+            case 'c':
+                _inputController.ObservatorC?.Dispose();
+                _inputController.ObservatorC = null;
+                break;
+            case 'v':
+                _inputController.ObservatorV?.Dispose();
+                _inputController.ObservatorV = null;
+                break;
+            case 'b':
+                _inputController.ObservatorB?.Dispose();
+                _inputController.ObservatorB = null;
+                break;
+            case 'n':
+                _inputController.ObservatorN?.Dispose();
+                _inputController.ObservatorN = null;
+                break;
+            case 'm':
+                _inputController.ObservatorM?.Dispose();
+                _inputController.ObservatorM = null;
+                break;
+            case '/':
+                _inputController.ObservatorSlash?.Dispose();
+                _inputController.ObservatorSlash = null;
+                break;
             case '-':
                 _inputController.ObservatorMinus?.Dispose();
                 _inputController.ObservatorMinus = null;
@@ -213,6 +278,16 @@ public class MainViewModel : ReactiveObject
                 _inputController.ObservatorEqual = null;
                 break;
         }
+    }
+
+    public void SwapSphere()
+    {
+        Controller.SwapSphere();
+    }
+
+    public void ChangeMaterial()
+    {
+        Controller.ChangeSphereMaterial();
     }
 
     public void GoForward()
@@ -270,5 +345,35 @@ public class MainViewModel : ReactiveObject
     public void ZoomOut()
     {
         Controller.ZoomOut(_zoomDiff);
+    }
+    
+    public void LightXPlus()
+    {
+        Controller.LightXPlus(_moveDiff);
+    }
+
+    public void LightXMinus()
+    {
+        Controller.LightXMinus(_moveDiff);
+    }
+
+    public void LightYPlus()
+    {
+        Controller.LightYPlus(_moveDiff);
+    }
+
+    public void LightYMinus()
+    {
+        Controller.LightYMinus(_moveDiff);
+    }
+    
+    public void LightZPlus()
+    {
+        Controller.LightZPlus(_moveDiff);
+    }
+
+    public void LightZMinus()
+    {
+        Controller.LightZMinus(_moveDiff);
     }
 }

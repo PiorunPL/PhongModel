@@ -2,6 +2,7 @@ namespace MainProject.Domain.Materials;
 
 public class Material
 {
+    
     public static Material Bronze =
         new Material(0.2125, 0.1275, 0.054, 0.714, 0.4284, 0.18144, 0.393548, 0.271906, 0.166721, 0.2);
 
@@ -73,6 +74,34 @@ public class Material
 
     public static Material YellowRubber =
         new Material(0.05, 0.05, 0, 0.5, 0.5, 0.4, 0.7, 0.7, 0.04, 0.078125);
+    
+    public static List<Material> AllMaterials = new List<Material>()
+    {
+        Bronze,
+        Emerald,
+        Jade,
+        Obsidian,
+        Pearl,
+        Ruby,
+        Turquoise,
+        Brass,
+        Chrome,
+        Copper,
+        Gold,
+        Silver,
+        BlackPlastic,
+        CyanPlastic,
+        GreenPlastic,
+        RedPlastic,
+        WhitePlastic,
+        YellowPlastic,
+        BlackRubber,
+        CyanRubber,
+        GreenRubber,
+        RedRubber,
+        WhiteRubber,
+        YellowRubber
+    };
     
     public double AmbientRed;
     public double AmbientGreen;

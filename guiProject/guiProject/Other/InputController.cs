@@ -23,5 +23,19 @@ public class InputController
     //Zoom
     public IDisposable? ObservatorMinus = null; //Zoom out
     public IDisposable? ObservatorEqual = null; //Zoom in
+    
+    // Light
+    public IDisposable? ObservatorZ = null;     //Left
+    public IDisposable? ObservatorX = null;     //Right
+    public IDisposable? ObservatorC = null;     //Down
+    public IDisposable? ObservatorV = null;     //Up
+    public IDisposable? ObservatorB = null;     //Counter Clockwise
+    public IDisposable? ObservatorN = null;     //Clockwise
+    
+    //Material
+    public IDisposable? ObservatorM = null;
+    
+    //Sphere
+    public IDisposable? ObservatorSlash = null;
 
 }

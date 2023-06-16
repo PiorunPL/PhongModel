@@ -1,6 +1,7 @@
 using MainProject.Domain.Basic;
 using MainProject.Domain.BSPTree;
 using MainProject.Domain.CameraRelated;
+using MainProject.Domain.Materials;
 using MainProject.Domain.WorldRelated;
 using MainProject.Utility;
 using SkiaSharp;
@@ -15,11 +16,12 @@ public class Controller
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
     private readonly BSPTreeBuilder _bspTreeBuilder = new BSPTreeBuilder();
     private Node _BSPTreeRoot;
+    private bool isSphere = false;
 
     public Controller()
     {
-        Triangle t = new Triangle(new Point(-1, 5, 3), new Point(1, 3, 1), new Point(0, 1, 5));
-        var plane = t.GetPlaneOfTriangle();
+        // Triangle t = new Triangle(new Point(-1, 5, 3), new Point(1, 3, 1), new Point(0, 1, 5));
+        // var plane = t.GetPlaneOfTriangle();
         
         Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 1);
         
@@ -68,11 +70,54 @@ public class Controller
         
         _camera.PassActualWorld(chosenTriangles);
         _camera.PassAllLights(_world.Lights);
-        var result = _camera.CreatePhotoTriangles(_world);
+        var result = _camera.CreatePhotoTriangles(_world, isSphere);
 
         return result;
     }
 
+    public void SwapSphere()
+    {
+        isSphere = !isSphere;
+    }
+    
+    public void ChangeSphereMaterial()
+    {
+        var index = Material.AllMaterials.IndexOf(_world.Spheres[0].Material);
+        index = (index + 1) % (Material.AllMaterials.Count);
+            
+        _world.Spheres[0].ChangeMaterial(Material.AllMaterials[index]);
+    }
+
+    public void LightXPlus(double diff)
+    {
+        _world.Lights[0].CenterPosition.CurrentPosition.X += diff;
+    }
+    
+    public void LightXMinus(double diff)
+    {
+        _world.Lights[0].CenterPosition.CurrentPosition.X -= diff;
+    }
+    
+    public void LightYPlus(double diff)
+    {
+        _world.Lights[0].CenterPosition.CurrentPosition.Y += diff;
+    }
+    
+    public void LightYMinus(double diff)
+    {
+        _world.Lights[0].CenterPosition.CurrentPosition.Y -= diff;
+    }
+    
+    public void LightZPlus(double diff)
+    {
+        _world.Lights[0].CenterPosition.CurrentPosition.Z += diff;
+    }
+    
+    public void LightZMinus(double diff)
+    {
+        _world.Lights[0].CenterPosition.CurrentPosition.Z -= diff;
+    }
+    
     public void ZoomIn(double t)
     {
         Console.WriteLine($"Before Zoom In: {_camera.ViewPort.Z} with t = {t}");

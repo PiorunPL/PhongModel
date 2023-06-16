@@ -10,14 +10,14 @@ public class WorldSphere
     public List<Sphere> Spheres = new List<Sphere>();
     public List<Light> Lights = new List<Light>();
 
-    public Point Center = new Point(0, 0, 20);
+    public Point Center = new Point(0, 0, 40);
     const double Epsilon = 1.0E-10;
     
     
     
     public WorldSphere()
     {
-        Sphere s1 = new Sphere(Center, 4, 5.0, Epsilon, Material.Gold);
+        Sphere s1 = new Sphere(Center, 4, 5.0, Epsilon, Material.Turquoise);
         Spheres.Add(s1);
         Triangles.AddRange(s1.Triangles);
         Points.AddRange(s1.Points);
@@ -27,20 +27,20 @@ public class WorldSphere
         Lights.Add(light1);
         Points.Add(light1Position);
         
-        Point light2Position = new Point(100, 50, 0);
-        Light light2 = new Light(light2Position, 255, 0, 0);
-        Lights.Add(light2);
-        Points.Add(light2Position);
-        //
+        // Point light2Position = new Point(100, 50, 0);
+        // Light light2 = new Light(light2Position, 255, 0, 0);
+        // Lights.Add(light2);
+        // Points.Add(light2Position);
+        // //
         // Point light2Position = new Point(0, 100, 20);
         // Light light2 = new Light(light2Position);
         // Lights.Add(light2);
         // Points.Add(light2Position);
         //
-        Point light3Position = new Point(-100, -20, 0);
-        Light light3 = new Light(light3Position, 0, 255, 0);
-        Lights.Add(light3);
-        Points.Add(light3Position);
+        // Point light3Position = new Point(-100, -20, 0);
+        // Light light3 = new Light(light3Position, 0, 255, 0);
+        // Lights.Add(light3);
+        // Points.Add(light3Position);
     }
 
     

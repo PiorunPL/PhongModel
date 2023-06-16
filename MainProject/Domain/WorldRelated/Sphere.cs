@@ -198,4 +198,14 @@ public class Sphere
 
         return new Point(mpX, mpY, mpZ);
     }
+
+    public void ChangeMaterial(Material material)
+    {
+        foreach (var triangle in Triangles)
+        {
+            triangle.Material = material;
+        }
+
+        Material = material;
+    }
 }

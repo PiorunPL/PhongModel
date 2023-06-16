@@ -24,10 +24,10 @@ public class Camera
         return BitmapUtil.GetBitmapFromLines(Lines);
     }
 
-    public SKBitmap CreatePhotoTriangles(WorldSphere world)
+    public SKBitmap CreatePhotoTriangles(WorldSphere world, bool isSphere)
     {
         // return BitmapUtil.GetBitmapFromTriangles(Triangles, Lights);
-        return BitmapUtil.GetBitmapFromTrianglesPixels(Triangles, Lights, world);
+        return BitmapUtil.GetBitmapFromTrianglesPixels(Triangles, Lights, world, isSphere);
     }
 
     public void PassActualWorld(List<Line> lines)

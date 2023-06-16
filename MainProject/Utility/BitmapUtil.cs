@@ -161,7 +161,7 @@ public class BitmapUtil
         return bitmap;
     }
     
-    public SKBitmap GetBitmapFromTrianglesPixels(List<Triangle> triangles, List<Light> lights, WorldSphere world)
+    public SKBitmap GetBitmapFromTrianglesPixels(List<Triangle> triangles, List<Light> lights, WorldSphere world, bool isSphere)
     {
         // TODO: change values to static
         SKBitmap bitmap = new SKBitmap(1900, 1000, true);
@@ -195,8 +195,8 @@ public class BitmapUtil
             {
                 Point pointOfPixel = GetPointFromPixelOnBitmap(pixel[0], pixel[1], targetWidth, targetHeight);
                 Vector vectorFromObserverToPointOfPixel = GetVectorFromObserverToPointOfPixel(pointOfPixel);
-                // Point3D pointOnTriangle =
-                //     GetCommonPointOfTriangleAndStraight(vectorFromObserverToPointOfPixel, planeOfTriangle);
+                Point3D pointOnTriangle =
+                    GetCommonPointOfTriangleAndStraight(vectorFromObserverToPointOfPixel, planeOfTriangle);
 
                 // vectorFromCenterToPointOnTriangle.SetLength(sphere.Radius);
                 // Point pointOnSphere = new Point(sphere.Center.CurrentPosition.X + vectorFromCenterToPointOnTriangle.X,
@@ -209,8 +209,14 @@ public class BitmapUtil
                 {
                     continue;
                 }
+                Point3D PointToCalculations;
+                if (isSphere)
+                    PointToCalculations = pointOnSphere.CurrentPosition;
+                else
+                    PointToCalculations = pointOnTriangle;
+                
                 Vector vectorFromCenterToPointOnTriangle = Vector.GetVector(
-                    world.Center.CurrentPosition, pointOnSphere.CurrentPosition);
+                    world.Center.CurrentPosition, PointToCalculations);
                 // double lenFromCenterToPointOnTriangle = vectorFromCenterToPointOnTriangle.GetLength();
                 // double lackOfLen = 1 - lenFromCenterToPointOnTriangle / world.Spheres[0].Radius;
                 //
@@ -231,13 +237,16 @@ public class BitmapUtil
                 int green = 0;
                 int blue = 0;
 
+                Vector normalisedNormal;
                 // var normalisedNormal = triangle.GetNormalisedNormalVectorFromPoint(pointOnTriangle);
-                // var normalisedNormal = triangle.GetNormalisedNormalVector();
-                var normalisedNormal = vectorFromCenterToPointOnTriangle.GetNormalized();
+                if(!isSphere)
+                    normalisedNormal = triangle.GetNormalisedNormalVector();
+                else
+                    normalisedNormal = vectorFromCenterToPointOnTriangle.GetNormalized();
 
                 foreach (var light in lights)
                 {
-                    var lightVector = Vector.GetVector(pointOnSphere.CurrentPosition, light.CenterPosition.CurrentPosition)
+                    var lightVector = Vector.GetVector(PointToCalculations, light.CenterPosition.CurrentPosition)
                         .GetNormalized();
                     double diffues_wsp = Vector.GetDotProduct(normalisedNormal, lightVector);
 
@@ -248,7 +257,7 @@ public class BitmapUtil
                         Z = normalisedNormal.Z * 2 * diffues_wsp - lightVector.Z
                     }.GetNormalized();
 
-                    var cameraVector = Vector.GetVector(pointOnSphere.CurrentPosition, new Point3D(0, 0, 0)).GetNormalized();
+                    var cameraVector = Vector.GetVector(PointToCalculations, new Point3D(0, 0, 0)).GetNormalized();
 
                     double specular_wsp = Vector.GetDotProduct(reflectionVector, cameraVector);
 
@@ -310,9 +319,9 @@ public class BitmapUtil
                 // Point p = new Point(pointOnSphere.CurrentPosition.X, pointOnSphere.CurrentPosition.Y, pointOnSphere.CurrentPosition.Z);
                 // (int x, int y) = p.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
                 // // triangle.GetAllPixelsInTriangle(targetWidth, targetHeight, ViewPort.Z);
-                outputPixels.Add(new[] { pixel[0], pixel[1] }, color);
+                // outputPixels.Add(new[] { pixel[0], pixel[1] }, color);
                 // bitmap.SetPixel(pixel[0], pixel[1], color);
-                if (pixel[0] < 0 || pixel[0] > 1900 || pixel[1] < 0 || pixel[1] > 1000)
+                if (pixel[0] < 0 || pixel[0] >= 1900 || pixel[1] < 0 || pixel[1] >= 1000)
                 {
                     continue;
                 }
