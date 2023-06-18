@@ -69,7 +69,8 @@ public class BitmapUtil
             var normal = triangle.GetNormalVector();
             var normalisedNormal = triangle.GetNormalisedNormalVector();
             var centralPoint = triangle.GetCentralPoint();
-
+            var cameraVector = Vector.GetVector(centralPoint, new Point3D(0, 0, 0)).GetNormalized();
+            
             foreach (var light in lights)
             {
 
@@ -83,9 +84,7 @@ public class BitmapUtil
                     Y = normalisedNormal.Y * 2 * diffues_wsp - lightVector.Y,
                     Z = normalisedNormal.Z * 2 * diffues_wsp - lightVector.Z
                 }.GetNormalized();
-
-                var cameraVector = Vector.GetVector(centralPoint, new Point3D(0, 0, 0)).GetNormalized();
-
+                
                 double specular_wsp = Vector.GetDotProduct(reflectionVector, cameraVector);
 
                 if (diffues_wsp < 0)

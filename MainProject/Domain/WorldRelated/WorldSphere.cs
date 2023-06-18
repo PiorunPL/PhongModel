@@ -17,7 +17,7 @@ public class WorldSphere
     
     public WorldSphere()
     {
-        Sphere s1 = new Sphere(Center, 4, 5.0, Epsilon, Material.Gold);
+        Sphere s1 = new Sphere(Center, 3, 5.0, Epsilon, Material.Gold);
         Spheres.Add(s1);
         Triangles.AddRange(s1.Triangles);
         Points.AddRange(s1.Points);

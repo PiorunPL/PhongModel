@@ -15,6 +15,7 @@
     <ItemGroup>
       <PackageReference Include="Accord" Version="3.8.2-alpha" />
       <PackageReference Include="Accord.Math" Version="3.8.2-alpha" />
+      <PackageReference Include="OpenTK" Version="4.7.7" />
       <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.3" />
     </ItemGroup>
 
