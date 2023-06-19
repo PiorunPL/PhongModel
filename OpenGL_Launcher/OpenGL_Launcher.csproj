@@ -9,6 +9,21 @@
 
     <ItemGroup>
       <PackageReference Include="OpenTK" Version="4.7.7" />
+      <PackageReference Include="SkiaSharp" Version="2.88.3" />
+      <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="SkiaSharp">
+        <HintPath>..\..\..\..\..\.nuget\packages\skiasharp\2.88.3\lib\net6.0\SkiaSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="System.Reactive">
+        <HintPath>..\..\..\..\..\.nuget\packages\system.reactive\5.0.0\lib\net5.0\System.Reactive.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MainProject\MainProject.csproj" />
     </ItemGroup>
 
 </Project>

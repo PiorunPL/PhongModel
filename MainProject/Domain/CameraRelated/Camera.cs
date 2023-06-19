@@ -13,10 +13,12 @@ public class Camera
     public List<Triangle> Triangles = new List<Triangle>();
     public List<Light> Lights = new List<Light>();
     public BitmapUtil BitmapUtil;
+    private SKCanvas Canvas;
 
-    public Camera()
+    public Camera(SKCanvas canvas)
     {
         BitmapUtil = new BitmapUtil(ViewPort);
+        Canvas = canvas;
     }
 
     public SKBitmap CreatePhoto()
@@ -24,9 +26,9 @@ public class Camera
         return BitmapUtil.GetBitmapFromLines(Lines);
     }
 
-    public SKBitmap CreatePhotoTriangles()
+    public void CreatePhotoTriangles()
     {
-        return BitmapUtil.GetBitmapFromTriangles(Triangles, Lights);
+        BitmapUtil.GetBitmapFromTriangles(Canvas, Triangles, Lights);
     }
 
     public void PassActualWorld(List<Line> lines)

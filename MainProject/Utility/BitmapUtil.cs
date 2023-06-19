@@ -47,10 +47,12 @@ public class BitmapUtil
         return bitmap;
     }
 
-    public SKBitmap GetBitmapFromTriangles(List<Triangle> triangles, List<Light> lights)
+    public void GetBitmapFromTriangles(SKCanvas canvas, List<Triangle> triangles, List<Light> lights)
     {
-        SKBitmap bitmap = new SKBitmap(targetWidth, targetHeight, true);
-        SKCanvas canvas = new SKCanvas(bitmap);
+        // SKBitmap bitmap = new SKBitmap(targetWidth, targetHeight, true);
+        // SKCanvas canvas = new SKCanvas(bitmap);
+        var z = ViewPort.Z;
+        
         
         var pathStroke = new SKPaint
         {
@@ -60,7 +62,10 @@ public class BitmapUtil
         };
         
         foreach (var triangle in triangles)
-        {   
+        {
+            
+            // Console.WriteLine($"Drawind with viewport.z = {z}");
+            
             
             int red = 0;
             int green = 0;
@@ -73,8 +78,6 @@ public class BitmapUtil
             
             foreach (var light in lights)
             {
-
-
                 var lightVector = Vector.GetVector(centralPoint, light.CenterPosition.CurrentPosition).GetNormalized();
                 double diffues_wsp = Vector.GetDotProduct(normalisedNormal, lightVector);
 
@@ -126,9 +129,9 @@ public class BitmapUtil
                 (byte)(green),
                 (byte)(blue));
 
-            (int x1, int y1) = triangle.P1.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
-            (int x2, int y2) = triangle.P2.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
-            (int x3, int y3) = triangle.P3.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
+            (int x1, int y1) = triangle.P1.getPointCoordinatesBitmap(targetWidth, targetHeight, z);
+            (int x2, int y2) = triangle.P2.getPointCoordinatesBitmap(targetWidth, targetHeight, z);
+            (int x3, int y3) = triangle.P3.getPointCoordinatesBitmap(targetWidth, targetHeight, z);
 
 
             var path = new SKPath { FillType = SKPathFillType.EvenOdd };
@@ -141,6 +144,6 @@ public class BitmapUtil
             canvas.DrawPath(path, pathStroke);
         }
         
-        return bitmap;
+        // return bitmap;
     }
 }

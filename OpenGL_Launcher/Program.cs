@@ -7,7 +7,7 @@ class Program
     [STAThread]
     public static void Main(String[]args)
     {
-        using (Game game = new Game(800,600, "LearnOpenTK")){
+        using (NewGame game = new NewGame(1900,1000, "LearnOpenTK")){
             game.Run();
             game.Focus();
         }    

@@ -11,12 +11,14 @@ namespace MainProject.Controller;
 public class Controller
 {
     private readonly WorldSphere _world = new();
-    private readonly Camera _camera = new Camera();
+    private readonly Camera _camera;
     private readonly List<Matrix4x4> _matrices = new List<Matrix4x4>();
     private readonly BSPTreeBuilder _bspTreeBuilder = new BSPTreeBuilder();
     private Node _BSPTreeRoot;
+    private SKCanvas Canvas;
+    private bool isCurrentlyDrawing = false;
 
-    public Controller()
+    public Controller(SKCanvas canvas)
     {
         Node? tempNode = _bspTreeBuilder.GetBestBSPTree(_world.Triangles, 1);
         
@@ -32,10 +34,21 @@ public class Controller
         {
             _world.Triangles.Remove(triangle);
         }
+
+        Canvas = canvas;
+        _camera = new Camera(Canvas);
     }
     
-    public SKBitmap CreatePhoto()
+    public void CreatePhoto()
     {
+        if (isCurrentlyDrawing)
+        {
+            Console.WriteLine("Multiple DRAWINGS");
+            return;
+        }
+
+        isCurrentlyDrawing = true;
+        
         if (_matrices.Count != 0)
         {
             Matrix4x4 resultMatrix = _matrices[0];
@@ -57,7 +70,6 @@ public class Controller
             _matrices.Clear();
         }
         
-        //TODO: Order Triangles
         PainingAlgorithOrder PAO = new PainingAlgorithOrder();
         PAO.CreateTrianglesOrder(_BSPTreeRoot);
         var orderedTriangles = PAO.Order;
@@ -65,16 +77,16 @@ public class Controller
         
         _camera.PassActualWorld(chosenTriangles);
         _camera.PassAllLights(_world.Lights);
-        var result = _camera.CreatePhotoTriangles();
+        _camera.CreatePhotoTriangles();
 
-        return result;
+        isCurrentlyDrawing = false;
     }
 
     public void ZoomIn(double t)
     {
-        Console.WriteLine($"Before Zoom In: {_camera.ViewPort.Z} with t = {t}");
+        // Console.WriteLine($"Before Zoom In: {_camera.ViewPort.Z} with t = {t}");
         _camera.ViewPort.Z += t;
-        Console.WriteLine($"After Zoom In: {_camera.ViewPort.Z}");
+        // Console.WriteLine($"After Zoom In: {_camera.ViewPort.Z}");
        
     }
 
@@ -82,13 +94,14 @@ public class Controller
     {
         if (_camera.ViewPort.Z - t <= 1)
             return;
-        Console.WriteLine($"Before Zoom Out: {_camera.ViewPort.Z} with t = {t}");
+        // Console.WriteLine($"Before Zoom Out: {_camera.ViewPort.Z} with t = {t}");
         _camera.ViewPort.Z -= t;
-        Console.WriteLine($"After Zoom Out: {_camera.ViewPort.Z}");
+        // Console.WriteLine($"After Zoom Out: {_camera.ViewPort.Z}");
     }
 
     public void GoForward(double t)
     {
+        // Console.WriteLine($"Translation. t = {t}");
         var matrix = Translation(0, 0, (float)-t);
         _matrices.Insert(0, matrix);
     }
