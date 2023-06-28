@@ -53,6 +53,8 @@ public class BitmapUtil
     {
         SKBitmap bitmap = new SKBitmap(targetWidth, targetHeight, true);
         SKCanvas canvas = new SKCanvas(bitmap);
+
+        var z = ViewPort.Z;
         
         var pathStroke = new SKPaint
         {
@@ -130,9 +132,9 @@ public class BitmapUtil
                 (byte)(green),
                 (byte)(blue));
 
-            (int x1, int y1) = triangle.P1.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
-            (int x2, int y2) = triangle.P2.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
-            (int x3, int y3) = triangle.P3.getPointCoordinatesBitmap(targetWidth, targetHeight, ViewPort.Z);
+            (int x1, int y1) = triangle.P1.getPointCoordinatesBitmap(targetWidth, targetHeight, z);
+            (int x2, int y2) = triangle.P2.getPointCoordinatesBitmap(targetWidth, targetHeight, z);
+            (int x3, int y3) = triangle.P3.getPointCoordinatesBitmap(targetWidth, targetHeight, z);
 
             // var poinTest1 = new Point(-19, 10, 15);
             // var poinTest2 = new Point(19, -10, 15);
@@ -165,6 +167,7 @@ public class BitmapUtil
     {
         // TODO: change values to static
         SKBitmap bitmap = new SKBitmap(1900, 1000, true);
+        var z = ViewPort.Z;
         // SKCanvas canvas = new SKCanvas(bitmap);
         
         // var pathStroke = new SKPaint
@@ -190,10 +193,10 @@ public class BitmapUtil
             Point3D center = sphere.Center.CurrentPosition;
             
             var planeOfTriangle = triangle.GetPlaneOfTriangle();
-            List<int[]> trianglePixels = triangle.GetAllPixelsInTriangle(targetWidth, targetHeight, ViewPort.Z, sphere.Center.CurrentPosition.Z);
+            List<int[]> trianglePixels = triangle.GetAllPixelsInTriangle(targetWidth, targetHeight, z, sphere.Center.CurrentPosition.Z);
             foreach (var pixel in trianglePixels)
             {
-                Point pointOfPixel = GetPointFromPixelOnBitmap(pixel[0], pixel[1], targetWidth, targetHeight);
+                Point pointOfPixel = GetPointFromPixelOnBitmap(pixel[0], pixel[1], targetWidth, targetHeight, z);
                 Vector vectorFromObserverToPointOfPixel = GetVectorFromObserverToPointOfPixel(pointOfPixel);
                 Point3D pointOnTriangle =
                     GetCommonPointOfTriangleAndStraight(vectorFromObserverToPointOfPixel, planeOfTriangle);
@@ -352,12 +355,12 @@ public class BitmapUtil
         return bitmap;
     }
     
-    private Point GetPointFromPixelOnBitmap(int pixelX, int pixelY, int targetWidth, int targetHeight)
+    private Point GetPointFromPixelOnBitmap(int pixelX, int pixelY, int targetWidth, int targetHeight, double z)
     {
         double x = (double)(pixelX - targetWidth/2.0) / 50.0;
         double y = (double)(pixelY - targetHeight/2.0) / -50.0;
         // TODO: change everywhere to static
-        double z = ViewPort.Z;
+        // double z = ViewPort.Z;
         return new Point(x, y, z);
     }
 

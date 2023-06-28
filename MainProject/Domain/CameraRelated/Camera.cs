@@ -27,6 +27,8 @@ public class Camera
     public SKBitmap CreatePhotoTriangles(WorldSphere world, bool isSphere)
     {
         // return BitmapUtil.GetBitmapFromTriangles(Triangles, Lights);
+        if (!isSphere)
+            return BitmapUtil.GetBitmapFromTriangles(Triangles, Lights);
         return BitmapUtil.GetBitmapFromTrianglesPixels(Triangles, Lights, world, isSphere);
     }
 
